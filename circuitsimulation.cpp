@@ -3,4 +3,6 @@
 CircuitSimulation::CircuitSimulation()
 {
 
+    Node n1;
+    n1.index=1;
 }
