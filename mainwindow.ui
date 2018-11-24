@@ -14,17 +14,17 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>160</y>
+      <x>150</x>
+      <y>80</y>
       <width>75</width>
-      <height>18</height>
+      <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>CheckBox</string>
+     <string>PushButton</string>
     </property>
    </widget>
   </widget>
@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
