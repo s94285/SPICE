@@ -24,10 +24,26 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    circuitsimulation.cpp \
+    node.cpp \
+    basiccomponent.cpp \
+    linearcomponent.cpp \
+    source.cpp \
+    resisitor.cpp \
+    capacitor.cpp \
+    inductor.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    circuitsimulation.h \
+    node.h \
+    basiccomponent.h \
+    linearcomponent.h \
+    source.h \
+    resisitor.h \
+    capacitor.h \
+    inductor.h
 
 FORMS += \
         mainwindow.ui
