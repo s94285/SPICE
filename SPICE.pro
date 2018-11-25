@@ -32,7 +32,8 @@ SOURCES += \
     source.cpp \
     resisitor.cpp \
     capacitor.cpp \
-    inductor.cpp
+    inductor.cpp \
+    workspace.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     source.h \
     resisitor.h \
     capacitor.h \
-    inductor.h
+    inductor.h \
+    workspace.h
 
 FORMS += \
         mainwindow.ui

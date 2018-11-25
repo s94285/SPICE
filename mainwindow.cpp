@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     //make toolbar buttons
-    short int buttonIndex[8]={4,15,21,22,24,25,26,29};
+    short int buttonIndex[8]={4,21,22,24,25,26,29,15};
     for(int i=0;i<8;i++){
         QPushButton *qb=new QPushButton;
         toolBarButton[i]=qb;
@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
         qb->setIcon(croped);
         ui->mainToolBar->addWidget(qb);
     }
-    //
 }
 
 MainWindow::~MainWindow()

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+class CircuitSimulation;
 namespace Ui {
 class MainWindow;
 }
@@ -14,7 +15,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    friend class CircuitSimulation;
 private:
     Ui::MainWindow *ui;
     QPushButton *toolBarButton[8];
