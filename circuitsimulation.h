@@ -13,7 +13,6 @@ class CircuitSimulation : public QObject
 private:
     MainWindow *mainWindow;
     QVector<BasicComponent*> components;
-signals:
 private slots:
     void run();
     void drawLine();

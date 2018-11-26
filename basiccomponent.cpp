@@ -6,12 +6,6 @@ BasicComponent::BasicComponent()
     anker_x=anker_y=0;
 }
 
-BasicComponent::~BasicComponent()
-{
-    delete pixmap;
-    delete bound;
-}
-
 void BasicComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
     qDebug() << "ITEM MOVE: " << event->scenePos().x() << "," << event->scenePos().y() << endl;
     anker_x=round(event->scenePos().x())/pixPerAnker;

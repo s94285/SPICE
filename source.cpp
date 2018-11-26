@@ -7,6 +7,11 @@ Source::Source()
     height=pixmap->height();
     bound=new QRectF(-width/2.,-height/2.,width,height);
 }
+Source::~Source(){
+    delete pixmap;
+    delete bound;
+}
+
 QRectF Source::boundingRect() const{
     return *bound;
 }

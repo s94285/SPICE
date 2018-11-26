@@ -26,7 +26,7 @@ CircuitSimulation::~CircuitSimulation(){
 void CircuitSimulation::init(){
 
     Source *s1=new Source;
-    s1->setPos(300,300);
+
     components.append(s1);
     mainWindow->ui->workspace->drawComponents(components);
 }

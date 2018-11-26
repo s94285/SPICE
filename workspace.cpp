@@ -49,7 +49,6 @@ void Workspace::mouseMoveEvent(QMouseEvent *event){
     }
 //    qDebug() << event->x() << " , " << event->y() << endl;
     QGraphicsView::mouseMoveEvent(event);
-    viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
 }
 void Workspace::mouseReleaseEvent(QMouseEvent *event){
     if(event->button()==Qt::MiddleButton){
