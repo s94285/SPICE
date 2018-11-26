@@ -1,5 +1,6 @@
 #include "circuitsimulation.h"
 #include <QDebug>
+#include <ui_mainwindow.h>
 CircuitSimulation::CircuitSimulation()
 {
     mainWindow=new MainWindow;
@@ -13,16 +14,21 @@ CircuitSimulation::CircuitSimulation()
     connect((mainWindow->toolBarButton)[5],SIGNAL(clicked()),this,SLOT(addInductor()));
     connect((mainWindow->toolBarButton)[6],SIGNAL(clicked()),this,SLOT(cut()));
     connect((mainWindow->toolBarButton)[7],SIGNAL(clicked()),this,SLOT(move()));
-
     mainWindow->show();
 }
 
 CircuitSimulation::~CircuitSimulation(){
+    for(auto i:components)
+        delete i;   //clean up all components
     delete mainWindow;
 }
 
 void CircuitSimulation::init(){
 
+    Source *s1=new Source;
+    s1->setPos(300,300);
+    components.append(s1);
+    mainWindow->ui->workspace->drawComponents(components);
 }
 
 void CircuitSimulation::run(){qDebug()<<"Run\n";}

@@ -22,7 +22,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="Workspace" name="graphicsView"/>
+     <widget class="Workspace" name="workspace"/>
     </item>
    </layout>
   </widget>

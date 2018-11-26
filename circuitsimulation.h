@@ -6,11 +6,13 @@
 #include "inductor.h"
 #include "capacitor.h"
 #include "mainwindow.h"
+#include <QVector>
 class CircuitSimulation : public QObject
 {
     Q_OBJECT
 private:
     MainWindow *mainWindow;
+    QVector<BasicComponent*> components;
 signals:
 private slots:
     void run();

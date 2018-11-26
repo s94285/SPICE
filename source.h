@@ -1,16 +1,18 @@
 #ifndef SOURCE_H
 #define SOURCE_H
+#include "basiccomponent.h"
 class CircuitSimulation;
 
-class Source
+class Source : public BasicComponent
 {
 protected:
     double amplitude;
     double freq;
-    unsigned int index;
     double phase;
 public:
     Source();
+    QRectF boundingRect() const;
+    void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     friend class CircuitSimulation;
 };
 
