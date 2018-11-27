@@ -7,6 +7,7 @@
 Workspace::Workspace(QWidget *parent):QGraphicsView (parent)
 {
     _pan=false;
+    itemSelected=nullptr;
     init();
 }
 void Workspace::init(){
@@ -26,37 +27,73 @@ void Workspace::drawComponents(QVector<BasicComponent*> &components_vector){
 }
 void Workspace::enterEvent(QEvent *event){
     QGraphicsView::enterEvent(event);
-    viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
+    switch (currentMode) {
+        case IDLE:
+        viewport()->setCursor(Qt::CrossCursor);
+        break;
+        case MOVE:
+        viewport()->setCursor(Qt::OpenHandCursor);
+        break;
+    }
+
 }
 void Workspace::mousePressEvent(QMouseEvent *event){
-    if(event->button()==Qt::MiddleButton){
-        _pan=true;
-        _panStartX=event->x();
-        _panStartY=event->y();
-        viewport()->setCursor(Qt::ClosedHandCursor);
-        event->accept();
-        return;
+    switch(currentMode){
+        case IDLE:
+        if(event->button()==Qt::LeftButton){
+            _pan=true;
+            _panStartX=event->x();
+            _panStartY=event->y();
+            viewport()->setCursor(Qt::ClosedHandCursor);
+            event->accept();
+            return;
+        }
+        break;
+        case MOVE:
+        if(itemSelected){   //selected
+            itemSelected=nullptr;
+            currentMode=IDLE;
+        }else{      //unselected
+            itemSelected=dynamic_cast<BasicComponent*>(itemAt(event->pos()));
+        }
+        break;
     }
+
     QGraphicsView::mousePressEvent(event);
     viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
 }
 void Workspace::mouseMoveEvent(QMouseEvent *event){
-    if(_pan){
-        horizontalScrollBar()->setValue(horizontalScrollBar()->value()-(event->x()-_panStartX));
-        verticalScrollBar()->setValue(verticalScrollBar()->value()-(event->y()-_panStartY));
-        _panStartX=event->x();
-        _panStartY=event->y();
+    switch(currentMode){
+        case IDLE:
+        if(_pan){
+            horizontalScrollBar()->setValue(horizontalScrollBar()->value()-(event->x()-_panStartX));
+            verticalScrollBar()->setValue(verticalScrollBar()->value()-(event->y()-_panStartY));
+            _panStartX=event->x();
+            _panStartY=event->y();
+        }
+        break;
+        case MOVE:
+        if(itemSelected){
+            itemSelected->moveTo(mapToScene(event->x(),event->y()));
+        }
+        break;
     }
-//    qDebug() << event->x() << " , " << event->y() << endl;
+
+    qDebug() << "viewMove " << event->x() << " , " << event->y() << endl;
     QGraphicsView::mouseMoveEvent(event);
 }
 void Workspace::mouseReleaseEvent(QMouseEvent *event){
-    if(event->button()==Qt::MiddleButton){
-        _pan=false;
-        viewport()->setCursor(Qt::CrossCursor);
-        event->accept();    //prevent for further propaganda
-        return;
+    switch (currentMode) {
+        case IDLE:
+        if(event->button()==Qt::LeftButton){
+            _pan=false;
+            viewport()->setCursor(Qt::CrossCursor);
+//            event->accept();    //prevent for further propaganda
+//            return;
+        }
+        break;
     }
+
     qDebug() << event->x() << " , " << event->y() << endl;
     QGraphicsView::mouseReleaseEvent(event);
     viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor

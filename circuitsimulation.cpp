@@ -15,6 +15,7 @@ CircuitSimulation::CircuitSimulation()
     connect((mainWindow->toolBarButton)[6],SIGNAL(clicked()),this,SLOT(cut()));
     connect((mainWindow->toolBarButton)[7],SIGNAL(clicked()),this,SLOT(move()));
     mainWindow->show();
+    workspace = mainWindow->ui->workspace;
 }
 
 CircuitSimulation::~CircuitSimulation(){
@@ -24,11 +25,11 @@ CircuitSimulation::~CircuitSimulation(){
 }
 
 void CircuitSimulation::init(){
-
-    Source *s1=new Source;
+    workspace->currentMode=IDLE;
+    Source *s1=new Source(0);
 
     components.append(s1);
-    mainWindow->ui->workspace->drawComponents(components);
+    workspace->drawComponents(components);
 }
 
 void CircuitSimulation::run(){qDebug()<<"Run\n";}
@@ -38,4 +39,7 @@ void CircuitSimulation::addResistor(){qDebug()<<"addResistor\n";}
 void CircuitSimulation::addCapacitor(){qDebug()<<"addCapacitor\n";}
 void CircuitSimulation::addInductor(){qDebug()<<"addInductor\n";}
 void CircuitSimulation::cut(){qDebug()<<"cut\n";}
-void CircuitSimulation::move(){qDebug()<<"move\n";}
+void CircuitSimulation::move(){
+    qDebug()<<"move\n";
+    workspace->currentMode=MOVE;
+}

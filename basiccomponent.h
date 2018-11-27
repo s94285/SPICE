@@ -9,6 +9,7 @@ class BasicComponent : public QGraphicsItem
 protected:
     unsigned index;
     QString name;
+    QString value;
     //uses for QGraphicsItem
     int width,height;
     int anker_x,anker_y;
@@ -24,6 +25,8 @@ public:
     //pure virtual functions uses for QGraphicsItem, must be re defined
     virtual QRectF boundingRect() const = 0;
     virtual void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget) = 0;
+    virtual void rotate()=0;
+    virtual void moveTo(const QPointF scenePoint)=0;
     friend class CircuitSimulation;
     const static int pixPerAnker;
 };
