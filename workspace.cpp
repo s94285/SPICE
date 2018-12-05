@@ -94,7 +94,15 @@ void Workspace::mouseReleaseEvent(QMouseEvent *event){
         break;
     }
 
-    qDebug() << event->x() << " , " << event->y() << endl;
+    qDebug() << "Scene " << mapToScene(event->pos()).x() << " , " << mapToScene(event->pos()).y() << endl;
     QGraphicsView::mouseReleaseEvent(event);
     viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
+}
+
+void Workspace::keyPressEvent(QKeyEvent *event){
+    if(itemSelected){
+        if(event->modifiers()==Qt::ControlModifier&&event->key()==Qt::Key_R){
+            itemSelected->rotate();
+        }
+    }
 }

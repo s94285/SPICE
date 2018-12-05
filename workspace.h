@@ -16,6 +16,7 @@ public slots:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 private:
     QGraphicsScene *scene;
     QPixmap *pixmap;
