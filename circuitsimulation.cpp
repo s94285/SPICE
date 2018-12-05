@@ -28,7 +28,8 @@ void CircuitSimulation::init(){
     workspace->currentMode=IDLE;
     Source *s1=new Source(0);
     components.append(s1);
-    workspace->drawComponents(components);
+    workspace->setComponents(components);
+    workspace->drawComponents();
 }
 
 void CircuitSimulation::run(){qDebug()<<"Run\n";}
@@ -39,11 +40,14 @@ void CircuitSimulation::addResistor(){
     workspace->currentMode=IDLE;
     Resisitor *r1=new Resisitor(0);
     components.append(r1);
-    workspace->drawComponents(components);
+    workspace->drawComponents();
 }
 void CircuitSimulation::addCapacitor(){qDebug()<<"addCapacitor\n";}
 void CircuitSimulation::addInductor(){qDebug()<<"addInductor\n";}
-void CircuitSimulation::cut(){qDebug()<<"cut\n";}
+void CircuitSimulation::cut(){
+    qDebug()<<"cut\n";
+    workspace->currentMode=CUT;
+}
 void CircuitSimulation::move(){
     qDebug()<<"move\n";
     workspace->currentMode=MOVE;

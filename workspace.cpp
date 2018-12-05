@@ -19,9 +19,14 @@ void Workspace::init(){
 //    scene->addItem(new QGraphicsRectItem(0,0,100,100));
     this->show();
 }
-void Workspace::drawComponents(QVector<BasicComponent*> &components_vector){
+
+void Workspace::setComponents(QVector<BasicComponent *> &components_vector)
+{
+    components = &components_vector;
+}
+void Workspace::drawComponents(){
    // scene->clear();
-    for(BasicComponent* comp:components_vector){
+    for(BasicComponent* comp:*components){
         scene->addItem(comp);
     }
     this->show();
@@ -34,6 +39,9 @@ void Workspace::enterEvent(QEvent *event){
         break;
         case MOVE:
         viewport()->setCursor(Qt::OpenHandCursor);
+        break;
+        case CUT:
+        viewport()->setCursor(Qt::ForbiddenCursor);
         break;
     }
 
@@ -54,13 +62,23 @@ void Workspace::mousePressEvent(QMouseEvent *event){
         if(itemSelected){   //selected
             itemSelected=nullptr;
             currentMode=IDLE;
+
         }else{      //unselected
             itemSelected=dynamic_cast<BasicComponent*>(itemAt(event->pos()));
-            qDebug()<<"selected\n";
+            qDebug()<<"selected12345\n";
+
         }
         break;
+        case CUT:
+        BasicComponent *toDelete=dynamic_cast<BasicComponent*>(itemAt(event->pos()));
+        for(int i=0;i<components->size();i++){
+            if(components->at(i)==toDelete)
+                components->erase(components->begin()+i);
+        }
+            delete toDelete;
+            currentMode=IDLE;
+        break;
     }
-
     QGraphicsView::mousePressEvent(event);
     viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
 }

@@ -8,7 +8,6 @@ Source::Source(unsigned int INDEX)
     width=pixmap->width();
     height=pixmap->height();
     bound=new QRectF(-width/2.,-height/2.,width,height);
-
     port1=QPoint(anker_x,anker_y);
 }
 Source::~Source(){
