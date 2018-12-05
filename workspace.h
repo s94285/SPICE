@@ -9,7 +9,8 @@ class Workspace : public QGraphicsView
 public:
     explicit Workspace(QWidget *parent = nullptr);
     void init();
-    void drawComponents(QVector<BasicComponent*> &components_vector);
+    void setComponents(QVector<BasicComponent*> &);
+    void drawComponents();
     friend class CircuitSimulation;
 public slots:
     void enterEvent(QEvent *event);
@@ -22,6 +23,7 @@ private:
     QPixmap *pixmap;
     MODE currentMode;
     BasicComponent *itemSelected;
+    QVector<BasicComponent*> *components;
     //for dragging
     bool _pan;
     int _panStartX, _panStartY;

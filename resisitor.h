@@ -7,7 +7,12 @@ class Resisitor : public LinearComponent
 protected:
     double resistance;
 public:
-    Resisitor();
+    Resisitor(unsigned int INDEX);
+    QRectF boundingRect() const;
+    void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
+    void rotate();
+    void moveTo(const QPointF scenePoint);
+    ~Resisitor();
     friend class CircuitSimulation;
 };
 
