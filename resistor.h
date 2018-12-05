@@ -2,17 +2,17 @@
 #define RESISITOR_H
 #include "linearcomponent.h"
 class CircuitSimulation;
-class Resisitor : public LinearComponent
+class Resistor : public LinearComponent
 {
 protected:
     double resistance;
 public:
-    Resisitor(unsigned int INDEX);
+    Resistor(unsigned int INDEX);
     QRectF boundingRect() const;
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     void rotate();
     void moveTo(const QPointF scenePoint);
-    ~Resisitor();
+    ~Resistor();
     friend class CircuitSimulation;
 };
 

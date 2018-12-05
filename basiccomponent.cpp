@@ -6,6 +6,11 @@ BasicComponent::BasicComponent()
     anker_x=anker_y=0;
 }
 
+BasicComponent::~BasicComponent()
+{
+    index_list.remove(index);
+}
+
 void BasicComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
     qDebug() << "ITEM MOVE: " << event->scenePos().x() << "," << event->scenePos().y() << endl;
 //    anker_x=round(event->scenePos().x())/pixPerAnker;
@@ -20,3 +25,4 @@ void BasicComponent::mousePressEvent(QGraphicsSceneMouseEvent *event){
 }
 
 const int BasicComponent::pixPerAnker = 15;
+QSet<unsigned> BasicComponent::index_list;

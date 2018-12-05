@@ -4,7 +4,7 @@
 #include <QGraphicsRectItem>
 #include <QScrollBar>
 #include "source.h"
-#include "resisitor.h"
+#include "resistor.h"
 Workspace::Workspace(QWidget *parent):QGraphicsView (parent)
 {
     _pan=false;

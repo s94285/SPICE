@@ -30,11 +30,11 @@ SOURCES += \
     basiccomponent.cpp \
     linearcomponent.cpp \
     source.cpp \
-    resisitor.cpp \
     capacitor.cpp \
     inductor.cpp \
     workspace.cpp \
-    ground.cpp
+    ground.cpp \
+    resistor.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,7 +47,7 @@ HEADERS += \
     inductor.h \
     workspace.h \
     ground.h \
-    resisitor.h
+    resistor.h
 
 FORMS += \
         mainwindow.ui

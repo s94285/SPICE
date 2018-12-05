@@ -8,6 +8,7 @@ class BasicComponent : public QGraphicsItem
 {
 protected:
     unsigned index;
+    static QSet<unsigned> index_list;
     QString name;
     QString value;
     //uses for QGraphicsItem
@@ -22,6 +23,7 @@ protected:
     int _panStartX, _panStartY;
 public:
     BasicComponent();
+    ~BasicComponent();
     //pure virtual functions uses for QGraphicsItem, must be re defined
     virtual QRectF boundingRect() const = 0;
     virtual void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget) = 0;

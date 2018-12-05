@@ -38,7 +38,12 @@ void CircuitSimulation::addGround(){qDebug()<<"addGround\n";}
 void CircuitSimulation::addResistor(){
     qDebug()<<"addResistor\n";
     workspace->currentMode=IDLE;
-    Resisitor *r1=new Resisitor(0);
+    unsigned int ind=0;
+    for(;;ind++)
+        if(Resistor::index_list.find(ind)==Resistor::index_list.end())
+            break;
+    Resistor *r1=new Resistor(ind);
+    Resistor::index_list.insert(ind);
     components.append(r1);
     workspace->drawComponents();
 }
