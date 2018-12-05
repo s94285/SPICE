@@ -52,7 +52,10 @@ void Source::rotate(){
     qDebug() << port1 << " , " << port2 << endl;
 }
 void Source::moveTo(const QPointF scenePoint){
+    QPoint oldAnker=QPoint(anker_x,anker_y);
     anker_x=round(scenePoint.x())/pixPerAnker;
     anker_y=round(scenePoint.y())/pixPerAnker;
     setPos(anker_x*pixPerAnker,anker_y*pixPerAnker);
+    port1+=getAnkerPoint()-oldAnker;
+    port2+=getAnkerPoint()-oldAnker;
 }

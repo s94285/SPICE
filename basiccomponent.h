@@ -29,6 +29,7 @@ public:
     virtual void moveTo(const QPointF scenePoint)=0;
     friend class CircuitSimulation;
     const static int pixPerAnker;
+    const QPoint getAnkerPoint()const{return QPoint(anker_x,anker_y);}
 };
 
 #endif // BASICCOMPONENT_H
