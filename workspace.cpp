@@ -4,6 +4,7 @@
 #include <QGraphicsRectItem>
 #include <QScrollBar>
 #include "source.h"
+#include "resisitor.h"
 Workspace::Workspace(QWidget *parent):QGraphicsView (parent)
 {
     _pan=false;
@@ -19,7 +20,7 @@ void Workspace::init(){
     this->show();
 }
 void Workspace::drawComponents(QVector<BasicComponent*> &components_vector){
-    scene->clear();
+   // scene->clear();
     for(BasicComponent* comp:components_vector){
         scene->addItem(comp);
     }
@@ -55,6 +56,7 @@ void Workspace::mousePressEvent(QMouseEvent *event){
             currentMode=IDLE;
         }else{      //unselected
             itemSelected=dynamic_cast<BasicComponent*>(itemAt(event->pos()));
+            qDebug()<<"selected\n";
         }
         break;
     }

@@ -1,5 +1,4 @@
 #include "source.h"
-
 Source::Source(unsigned int INDEX)
 {
     index=INDEX;

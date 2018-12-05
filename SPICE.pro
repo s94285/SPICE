@@ -43,11 +43,11 @@ HEADERS += \
     basiccomponent.h \
     linearcomponent.h \
     source.h \
-    resisitor.h \
     capacitor.h \
     inductor.h \
     workspace.h \
-    ground.h
+    ground.h \
+    resisitor.h
 
 FORMS += \
         mainwindow.ui
