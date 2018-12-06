@@ -8,7 +8,7 @@ BasicComponent::BasicComponent()
 
 BasicComponent::~BasicComponent()
 {
-    index_list.remove(index);
+   // index_list.remove(index);
 }
 
 void BasicComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
@@ -25,4 +25,4 @@ void BasicComponent::mousePressEvent(QGraphicsSceneMouseEvent *event){
 }
 
 const int BasicComponent::pixPerAnker = 15;
-QSet<unsigned> BasicComponent::index_list;
+//QSet<unsigned> BasicComponent::index_list;

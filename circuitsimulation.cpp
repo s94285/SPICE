@@ -47,8 +47,30 @@ void CircuitSimulation::addResistor(){
     components.append(r1);
     workspace->drawComponents();
 }
-void CircuitSimulation::addCapacitor(){qDebug()<<"addCapacitor\n";}
-void CircuitSimulation::addInductor(){qDebug()<<"addInductor\n";}
+void CircuitSimulation::addCapacitor(){
+    qDebug()<<"addCapacitor\n";
+    workspace->currentMode=IDLE;
+    unsigned int ind=0;
+    for(;;ind++)
+        if(Capacitor::index_list.find(ind)==Capacitor::index_list.end())
+            break;
+    Capacitor *c1=new Capacitor(ind);
+    Capacitor::index_list.insert(ind);
+    components.append(c1);
+    workspace->drawComponents();
+}
+void CircuitSimulation::addInductor(){
+    qDebug()<<"addInductor\n";
+    workspace->currentMode=IDLE;
+    unsigned int ind=0;
+    for(;;ind++)
+        if(Inductor::index_list.find(ind)==Inductor::index_list.end())
+            break;
+    Inductor *i1=new Inductor(ind);
+    Inductor::index_list.insert(ind);
+    components.append(i1);
+    workspace->drawComponents();
+}
 void CircuitSimulation::cut(){
     qDebug()<<"cut\n";
     workspace->currentMode=CUT;

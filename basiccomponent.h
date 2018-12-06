@@ -8,7 +8,6 @@ class BasicComponent : public QGraphicsItem
 {
 protected:
     unsigned index;
-    static QSet<unsigned> index_list;
     QString name;
     QString value;
     //uses for QGraphicsItem

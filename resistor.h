@@ -6,6 +6,7 @@ class Resistor : public LinearComponent
 {
 protected:
     double resistance;
+    static QSet<unsigned> index_list;
 public:
     Resistor(unsigned int INDEX);
     QRectF boundingRect() const;

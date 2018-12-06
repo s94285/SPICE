@@ -6,8 +6,14 @@ class Inductor : public LinearComponent
 {
 protected:
     double inductance;
+    static QSet<unsigned> index_list;
 public:
-    Inductor();
+    Inductor(unsigned int INDEX);
+    QRectF boundingRect() const;
+    void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
+    void rotate();
+    void moveTo(const QPointF scenePoint);
+    ~Inductor();
     friend class  CircuitSimulation;
 };
 
