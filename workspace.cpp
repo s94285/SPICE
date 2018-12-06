@@ -47,6 +47,11 @@ void Workspace::enterEvent(QEvent *event){
 
 }
 void Workspace::mousePressEvent(QMouseEvent *event){
+    if(event->button()==Qt::RightButton&&itemAt(event->pos())==nullptr){
+        currentMode=IDLE;
+        viewport()->setCursor(Qt::CrossCursor);
+        return;
+    }
     switch(currentMode){
         case IDLE:
         if(event->button()==Qt::LeftButton){
@@ -61,12 +66,9 @@ void Workspace::mousePressEvent(QMouseEvent *event){
         case MOVE:
         if(itemSelected){   //selected
             itemSelected=nullptr;
-            currentMode=IDLE;
-
         }else{      //unselected
             itemSelected=dynamic_cast<BasicComponent*>(itemAt(event->pos()));
             qDebug()<<"selected12345\n";
-
         }
         break;
         case CUT:
@@ -76,11 +78,10 @@ void Workspace::mousePressEvent(QMouseEvent *event){
                 components->erase(components->begin()+i);
         }
             delete toDelete;
-            currentMode=IDLE;
         break;
     }
     QGraphicsView::mousePressEvent(event);
-    viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
+//    viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
 }
 void Workspace::mouseMoveEvent(QMouseEvent *event){
     switch(currentMode){
@@ -93,6 +94,7 @@ void Workspace::mouseMoveEvent(QMouseEvent *event){
         }
         break;
         case MOVE:
+        viewport()->setCursor(Qt::OpenHandCursor);
         if(itemSelected){
             itemSelected->moveTo(mapToScene(event->x(),event->y()));
         }
@@ -116,7 +118,7 @@ void Workspace::mouseReleaseEvent(QMouseEvent *event){
 
     qDebug() << "Scene " << mapToScene(event->pos()).x() << " , " << mapToScene(event->pos()).y() << endl;
     QGraphicsView::mouseReleaseEvent(event);
-    viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
+//    viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
 }
 
 void Workspace::keyPressEvent(QKeyEvent *event){

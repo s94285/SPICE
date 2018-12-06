@@ -25,6 +25,7 @@ private slots:
     void addInductor();
     void cut();
     void move();
+    void addSource();
 public:
     CircuitSimulation();
     ~CircuitSimulation();

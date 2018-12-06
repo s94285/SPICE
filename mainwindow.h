@@ -18,7 +18,7 @@ public:
     friend class CircuitSimulation;
 private:
     Ui::MainWindow *ui;
-    QPushButton *toolBarButton[8];
+    QPushButton *toolBarButton[9];
 };
 
 #endif // MAINWINDOW_H

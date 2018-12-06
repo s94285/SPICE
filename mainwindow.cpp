@@ -18,6 +18,15 @@ MainWindow::MainWindow(QWidget *parent) :
         qb->setIcon(croped);
         ui->mainToolBar->addWidget(qb);
     }
+    {   //add source button
+        QPushButton *qb=new QPushButton;
+        toolBarButton[8]=qb;
+        qb->setFixedSize(30,30);
+        qb->setIconSize(QSize(24,22));
+        QPixmap qp(":/resources/source.png");
+        qb->setIcon(qp);
+        ui->mainToolBar->addWidget(qb);
+    }
 }
 
 MainWindow::~MainWindow()

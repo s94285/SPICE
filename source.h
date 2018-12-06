@@ -12,6 +12,7 @@ protected:
     QPoint port1;
     QPoint port2;
     double current;
+    static QSet<unsigned> index_list;
 public:
     Source(unsigned int INDEX);
     QRectF boundingRect() const;

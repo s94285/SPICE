@@ -14,6 +14,7 @@ Source::Source(unsigned int INDEX)
     port2=QPoint(anker_x,anker_y+4);
 }
 Source::~Source(){
+    index_list.remove(index);
     delete pixmap;
     delete bound;
 }
