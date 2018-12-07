@@ -60,4 +60,9 @@ void Capacitor::moveTo(const QPointF scenePoint){
     port1+=getAnkerPoint()-oldAnker;
     port2+=getAnkerPoint()-oldAnker;
 }
+void Capacitor::set(QString cname,QString cvalue)
+{
+    name=cname;
+    value=cvalue;
+}
 QSet<unsigned> Capacitor::index_list;

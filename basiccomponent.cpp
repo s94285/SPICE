@@ -23,6 +23,10 @@ void BasicComponent::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
 void BasicComponent::mousePressEvent(QGraphicsSceneMouseEvent *event){
     qDebug() << "ITEM PRESS: " << event->scenePos().x() << "," << event->scenePos().y() << endl;
 }
-
+void BasicComponent::set(QString cname,QString cvalue)
+{
+    name=cname;
+    value=cvalue;
+}
 const int BasicComponent::pixPerAnker = 15;
 //QSet<unsigned> BasicComponent::index_list;

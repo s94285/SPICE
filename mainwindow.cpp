@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -26,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QPixmap qp(":/resources/source.png");
         qb->setIcon(qp);
         ui->mainToolBar->addWidget(qb);
-    }
+    }    
 }
 
 MainWindow::~MainWindow()

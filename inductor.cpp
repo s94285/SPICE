@@ -60,5 +60,10 @@ void Inductor::moveTo(const QPointF scenePoint){
     port1+=getAnkerPoint()-oldAnker;
     port2+=getAnkerPoint()-oldAnker;
 }
+void Inductor::set(QString cname,QString cvalue)
+{
+    name=cname;
+    value=cvalue;
+}
 QSet<unsigned> Inductor::index_list;
 

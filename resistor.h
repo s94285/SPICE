@@ -13,6 +13,7 @@ public:
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     void rotate();
     void moveTo(const QPointF scenePoint);
+    void set(QString name,QString value);
     ~Resistor();
     friend class CircuitSimulation;
 };

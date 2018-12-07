@@ -5,11 +5,16 @@
 #include <QScrollBar>
 #include "source.h"
 #include "resistor.h"
+#include "inductor.h"
+#include "capacitor.h"
+#include "editdialog.h"
+#include <QDialog>
 Workspace::Workspace(QWidget *parent):QGraphicsView (parent)
 {
     _pan=false;
     itemSelected=nullptr;
     init();
+
 }
 void Workspace::init(){
 //    this->setDragMode(QGraphicsView::ScrollHandDrag);
@@ -50,7 +55,33 @@ void Workspace::mousePressEvent(QMouseEvent *event){
     if(event->button()==Qt::RightButton&&itemAt(event->pos())==nullptr){
         currentMode=IDLE;
         viewport()->setCursor(Qt::CrossCursor);
+
         return;
+    }
+    if(event->button()==Qt::RightButton&&itemAt(event->pos())!=nullptr)
+    {
+       /* Resistor *rptr;
+        Inductor *iptr;
+        Capacitor *cptr; */
+        /*if(dynamic_cast<Resistor*>(itemAt(event->pos())))
+        {
+            dialog=new editDialog(this,dynamic_cast<Resistor*>(itemAt(event->pos())));
+        }
+        else if(dynamic_cast<Inductor*>(itemAt(event->pos())))
+        {
+            dialog=new editDialog(this,dynamic_cast<Inductor*>(itemAt(event->pos())));
+        }
+        else
+        {
+            dialog=new editDialog(this,dynamic_cast<Capacitor*>(itemAt(event->pos())));
+        }*/
+
+        dialog=new editDialog(this,dynamic_cast<BasicComponent*>(itemAt(event->pos())));
+        currentMode=IDLE;
+        dialog->show();
+
+
+
     }
     switch(currentMode){
         case IDLE:

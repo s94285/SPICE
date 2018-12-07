@@ -59,4 +59,9 @@ void Resistor::moveTo(const QPointF scenePoint){
     port1+=getAnkerPoint()-oldAnker;
     port2+=getAnkerPoint()-oldAnker;
 }
+void Resistor::set(QString cname,QString cvalue)
+{
+    name=cname;
+    value=cvalue;
+}
 QSet<unsigned> Resistor::index_list;

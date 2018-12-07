@@ -34,7 +34,8 @@ SOURCES += \
     inductor.cpp \
     workspace.cpp \
     ground.cpp \
-    resistor.cpp
+    resistor.cpp \
+    editdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,10 +48,12 @@ HEADERS += \
     inductor.h \
     workspace.h \
     ground.h \
-    resistor.h
+    resistor.h \
+    editdialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    editdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -2,8 +2,10 @@
 #define WORKSPACE_H
 #include <QGraphicsView>
 #include "basiccomponent.h"
+#include <QDialog>
 enum MODE{IDLE,RUN,DRAWLINE,ADDGROUND,ADDRESISTOR,ADDCAPACITOR,ADDINDUCTOR,CUT,MOVE};
 class CircuitSimulation;
+class editDialog;
 class Workspace : public QGraphicsView
 {
 public:
@@ -27,6 +29,7 @@ private:
     //for dragging
     bool _pan;
     int _panStartX, _panStartY;
+    editDialog *dialog;
 };
 
 #endif // WORKSPACE_H
