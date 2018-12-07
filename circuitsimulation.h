@@ -5,6 +5,7 @@
 #include "source.h"
 #include "inductor.h"
 #include "capacitor.h"
+#include "ground.h"
 #include "mainwindow.h"
 #include "workspace.h"
 #include <QVector>
