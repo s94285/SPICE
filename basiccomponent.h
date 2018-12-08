@@ -29,6 +29,8 @@ public:
     virtual void rotate()=0;
     virtual void moveTo(const QPointF scenePoint)=0;
     void set(QString name,QString value);
+    const QString getName()const{return name;}
+    const QString getValue()const{return value;}
     friend class CircuitSimulation;
     const static int pixPerAnker;
     const QPoint getAnkerPoint()const{return QPoint(anker_x,anker_y);}

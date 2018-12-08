@@ -10,6 +10,9 @@ editDialog::editDialog(QWidget *parent,BasicComponent *item) :
 {
     ui->setupUi(this);
     citem=item;
+    this->setWindowTitle("Settings: "+citem->getName());
+    ui->lineEdit_name->setText(citem->getName());
+    ui->lineEdit_value->setText(citem->getValue());
 }
 
 editDialog::~editDialog()
@@ -33,11 +36,6 @@ void editDialog::on_buttonBox_accepted()
      {
 
      }*/
-     qDebug()<<ui->lineEdit_2->text()<<ui->lineEdit->text()<<endl;
-     citem->set(ui->lineEdit->text(),ui->lineEdit_2->text());
-}
-
-void editDialog::on_buttonBox_clicked(QAbstractButton *button)
-{
-
+     qDebug()<<ui->lineEdit_name->text()<<ui->lineEdit_value->text()<<endl;
+     citem->set(ui->lineEdit_name->text(),ui->lineEdit_value->text());
 }
