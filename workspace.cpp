@@ -9,6 +9,7 @@
 #include "capacitor.h"
 #include "editdialog.h"
 #include <QDialog>
+#include "sourcedialog.h"
 Workspace::Workspace(QWidget *parent):QGraphicsView (parent)
 {
     _pan=false;
@@ -75,12 +76,20 @@ void Workspace::mousePressEvent(QMouseEvent *event){
         {
             dialog=new editDialog(this,dynamic_cast<Capacitor*>(itemAt(event->pos())));
         }*/
-
-        dialog=new editDialog(this,dynamic_cast<BasicComponent*>(itemAt(event->pos())));
-        currentMode=IDLE;
-        dialog->show();
-
-
+        if(dynamic_cast<Resistor*>(itemAt(event->pos()))!=nullptr||dynamic_cast<Inductor*>(itemAt(event->pos()))!=nullptr||dynamic_cast<Capacitor*>(itemAt(event->pos()))!=nullptr)
+        {
+            dialog=new editDialog(this,dynamic_cast<BasicComponent*>(itemAt(event->pos())));
+            currentMode=IDLE;
+            dialog->show();
+        }
+        else if(dynamic_cast<Source*>(itemAt(event->pos()))!=nullptr)
+        {
+            sourcedialog=new SourceDialog(this,dynamic_cast<Source*>(itemAt(event->pos())));
+            currentMode=IDLE;
+            sourcedialog->show();
+        }
+        else
+            currentMode=IDLE;
 
     }
     switch(currentMode){

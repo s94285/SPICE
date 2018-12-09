@@ -6,6 +6,7 @@
 enum MODE{IDLE,RUN,DRAWLINE,ADDGROUND,ADDRESISTOR,ADDCAPACITOR,ADDINDUCTOR,CUT,MOVE};
 class CircuitSimulation;
 class editDialog;
+class SourceDialog;
 class Workspace : public QGraphicsView
 {
 public:
@@ -30,6 +31,7 @@ private:
     bool _pan;
     int _panStartX, _panStartY;
     editDialog *dialog;
+    SourceDialog *sourcedialog;
 };
 
 #endif // WORKSPACE_H

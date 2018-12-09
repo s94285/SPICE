@@ -6,12 +6,16 @@ class CircuitSimulation;
 class Source : public BasicComponent
 {
 protected:
-    double amplitude;
-    double freq;
-    double phase;
+    double amplitude=0;
+    double freq=0;
+    double phase=0;
+    double DCvalue=0;
+    double Von=0;
+    double Vinitial=0;
     QPoint port1;
     QPoint port2;
     double current;
+
     static QSet<unsigned> index_list;
 public:
     Source(unsigned int INDEX);
@@ -21,6 +25,8 @@ public:
     ~Source();
     void rotate();
     void moveTo(const QPointF scenePoint);
+    void getdata(QString &getamp,QString &getfreq,QString &getphase,QString &getDCValue,QString &getVon,QString &getVinitial);
+    void setdata(QString getamp,QString getfreq,QString getphase,QString getDCValue,QString getVon,QString getVinitial);
 };
 
 #endif // SOURCE_H

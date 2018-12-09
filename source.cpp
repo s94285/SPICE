@@ -60,3 +60,30 @@ void Source::moveTo(const QPointF scenePoint){
     port1+=getAnkerPoint()-oldAnker;
     port2+=getAnkerPoint()-oldAnker;
 }
+
+void Source::getdata(QString &getamp, QString &getfreq, QString &getphase, QString &getDCValue, QString &getVon, QString &getVinitial){
+    double temp;
+    double temparr[6]={amplitude,freq,phase,DCvalue,Von,Vinitial};
+    qDebug() << temparr[0] << endl;
+    QString *tempgetarr[6]={&getamp,&getfreq,&getphase,&getDCValue,&getVon,&getVinitial};
+    for(int i=0;i<6;i++)
+    {
+        temp=temparr[i];
+//        if((int)temp==0)
+//            *(tempgetarr[i])=" ";
+//        else
+            *(tempgetarr[i])=QString::number(temparr[i]);
+
+    }
+}
+
+void Source::setdata(QString getamp, QString getfreq, QString getphase, QString getDCValue, QString getVon, QString getVinitial){
+    double *temparr[6]={&amplitude,&freq,&phase,&DCvalue,&Von,&Vinitial};
+    QString tempgetarr[6]={getamp,getfreq,getphase,getDCValue,getVon,getVinitial};
+    for(int i=0;i<6;i++)
+    {
+        *(temparr[i])=tempgetarr[i].toDouble();
+        //*(&amplitude)=tempgetarr[0].toDouble();
+
+    }
+}
