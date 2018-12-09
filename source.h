@@ -2,7 +2,7 @@
 #define SOURCE_H
 #include "basiccomponent.h"
 class CircuitSimulation;
-
+enum SOURCEMODE{DC,SIN,SQUARE};
 class Source : public BasicComponent
 {
 protected:
@@ -18,6 +18,7 @@ protected:
 
     static QSet<unsigned> index_list;
 public:
+    SOURCEMODE currentMode=DC;
     Source(unsigned int INDEX);
     QRectF boundingRect() const;
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);

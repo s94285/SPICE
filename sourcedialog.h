@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "workspace.h"
 #include "source.h"
+
 namespace Ui {
 class SourceDialog;
 }
