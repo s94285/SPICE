@@ -121,7 +121,7 @@
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>140</y>
+     <y>128</y>
      <width>151</width>
      <height>20</height>
     </rect>
@@ -133,8 +133,8 @@
   <widget class="QLineEdit" name="lineEdit_Freq">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>170</y>
+     <x>232</x>
+     <y>160</y>
      <width>113</width>
      <height>20</height>
     </rect>
