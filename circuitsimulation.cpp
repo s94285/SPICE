@@ -113,4 +113,5 @@ void CircuitSimulation::addSource()
     workspace->itemSelected=s1;
     workspace->drawComponents();
 }
+
 QSet<unsigned> Source::index_list;

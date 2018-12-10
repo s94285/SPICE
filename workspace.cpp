@@ -111,13 +111,13 @@ void Workspace::mousePressEvent(QMouseEvent *event){
         {
             dialog=new editDialog(this,dynamic_cast<BasicComponent*>(itemAt(event->pos())));
             currentMode=IDLE;
-            dialog->show();
+            dialog->exec();
         }
         else if(dynamic_cast<Source*>(itemAt(event->pos()))!=nullptr)
         {
             sourcedialog=new SourceDialog(this,dynamic_cast<Source*>(itemAt(event->pos())));
             currentMode=IDLE;
-            sourcedialog->show();
+            sourcedialog->exec();
         }
         else
             currentMode=IDLE;

@@ -24,6 +24,7 @@ editDialog::~editDialog()
 void editDialog::on_buttonBox_accepted()
 {
      qDebug()<<"ok button clicked\n";
+
      qDebug()<<ui->lineEdit_name->text()<<ui->lineEdit_value->text()<<endl;
      citem->set(ui->lineEdit_name->text(),ui->lineEdit_value->text());
 }
