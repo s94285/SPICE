@@ -8,6 +8,7 @@
 #include "ground.h"
 #include "mainwindow.h"
 #include "workspace.h"
+#include "line.h"
 #include <QVector>
 
 class CircuitSimulation : public QObject
@@ -16,6 +17,8 @@ class CircuitSimulation : public QObject
 private:
     MainWindow *mainWindow;
     QVector<BasicComponent*> components;
+    QVector<Node*> nodes;
+    QVector<Line*> lines;
     Workspace *workspace;
 private slots:
     void run();

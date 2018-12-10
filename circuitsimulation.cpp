@@ -28,11 +28,16 @@ CircuitSimulation::~CircuitSimulation(){
 void CircuitSimulation::init(){
     workspace->currentMode=IDLE;
     workspace->setComponents(components);
+    workspace->setNodes(nodes);
+    workspace->setLines(lines);
     workspace->drawComponents();
 }
 
 void CircuitSimulation::run(){qDebug()<<"Run\n";}
-void CircuitSimulation::drawLine(){qDebug()<<"drawLine\n";}
+void CircuitSimulation::drawLine(){
+    qDebug()<<"drawLine\n";
+    workspace->currentMode=DRAWLINE;
+}
 void CircuitSimulation::addGround(){
     qDebug()<<"addGround\n";
     workspace->currentMode=MOVE;

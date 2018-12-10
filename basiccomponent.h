@@ -20,6 +20,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     bool _pan;
     int _panStartX, _panStartY;
+    QVector<QPoint> ports;
 public:
     BasicComponent();
     ~BasicComponent();
@@ -34,6 +35,7 @@ public:
     friend class CircuitSimulation;
     const static int pixPerAnker;
     const QPoint getAnkerPoint()const{return QPoint(anker_x,anker_y);}
+    QPoint *getPortByScenePoint(const QPointF &itemPoint);
 };
 
 #endif // BASICCOMPONENT_H

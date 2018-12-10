@@ -1,6 +1,6 @@
 #include "node.h"
 
-Node::Node()
+Node::Node(QGraphicsItem *parent):QGraphicsItemGroup(parent)
 {
 
 }

@@ -12,8 +12,6 @@ protected:
     double DCvalue=0;
     double Von=0;
     double Vinitial=0;
-    QPoint port1;
-    QPoint port2;
     double current;
 
     static QSet<unsigned> index_list;

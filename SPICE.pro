@@ -26,7 +26,6 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     circuitsimulation.cpp \
-    node.cpp \
     basiccomponent.cpp \
     linearcomponent.cpp \
     source.cpp \
@@ -36,7 +35,9 @@ SOURCES += \
     ground.cpp \
     resistor.cpp \
     editdialog.cpp \
-    sourcedialog.cpp
+    sourcedialog.cpp \
+    node.cpp \
+    line.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -51,7 +52,9 @@ HEADERS += \
     ground.h \
     resistor.h \
     editdialog.h \
-    sourcedialog.h
+    sourcedialog.h \
+    node.h \
+    line.h
 
 FORMS += \
         mainwindow.ui \

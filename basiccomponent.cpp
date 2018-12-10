@@ -28,5 +28,16 @@ void BasicComponent::set(QString cname,QString cvalue)
     name=cname;
     value=cvalue;
 }
+
+QPoint *BasicComponent::getPortByScenePoint(const QPointF &itemPoint)
+{
+    for(QPoint &pt:ports){
+        qDebug() << pt << endl;
+        if(round(itemPoint.x()/pixPerAnker)==pt.x()&&round(itemPoint.y()/pixPerAnker)==pt.y()){
+            return &pt;
+        }
+    }
+    return nullptr;
+}
 const int BasicComponent::pixPerAnker = 15;
 //QSet<unsigned> BasicComponent::index_list;
