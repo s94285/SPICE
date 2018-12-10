@@ -181,7 +181,7 @@ void Workspace::mousePressEvent(QMouseEvent *event){
         {
         QGraphicsItem *itemClicked=nullptr;
         for(QGraphicsItem *i:items(event->pos()))
-            if(i!=drawLineX&&i!=drawLineY&&i!=drawingline){ //when drawingline, click through current line
+            if(i!=drawLineX&&i!=drawLineY&&i!=drawingline&&dynamic_cast<Node*>(i)==nullptr){ //when drawingline, click through current line and nodes
                 itemClicked=i;
                 break;
             }
@@ -216,13 +216,34 @@ void Workspace::mousePressEvent(QMouseEvent *event){
                         this->drawComponents();
                     }
                 }
-            }else if(lineClicked){
-                qDebug() << "Clicked on Line\n";
+            }else if(lineClicked){  //need to draw blue rectangle for articulation
+                qDebug() << "Clicked on another Line\n";
+                if(drawingline==nullptr){    //only accept line for simplicy
+                    //add a new line with same node
+                    Node *node=dynamic_cast<Node*>(lineClicked->group());
+                    if(node){
+                        drawingline=new Line(mapToScene(event->pos()),mapToScene(event->pos()));
+                        drawingline->setPoint1Rect(true);
+                        lines->append(drawingline);
+                        node->addToGroup(drawingline);
+                        drawingline->setGroup(node);
+                        scene->update();
+                    }else
+                        qDebug() << "didn't get node";
+                }
             }
         }else{  //itemcliked == nullptr
+            qDebug() << "Clicked outside";
             if(drawingline){//finish this line and create new line
                 Node *node=dynamic_cast<Node*>(drawingline->group());
-
+                if(node){
+                    drawingline=new Line(drawingline->getPoint2(),drawingline->getPoint2());
+                    lines->append(drawingline);
+                    node->addToGroup(drawingline);
+                    drawingline->setGroup(node);
+                    scene->update();
+                }else
+                    qDebug() << "didn't get node";
             }
         }
             break;
@@ -291,8 +312,10 @@ void Workspace::mouseReleaseEvent(QMouseEvent *event){
 }
 
 void Workspace::keyPressEvent(QKeyEvent *event){
+    qDebug() << "rotate: " << itemSelected;
     if(itemSelected){
         if(event->modifiers()==Qt::ControlModifier&&event->key()==Qt::Key_R){
+            qDebug() << "rotate";
             itemSelected->rotate();
         }
     }
