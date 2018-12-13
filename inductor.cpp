@@ -10,8 +10,8 @@ Inductor::Inductor(unsigned int INDEX)
     height=pixmap->height();
     bound=new QRectF(-width/2.,-height/2.,width,height);
 
-    port1=QPoint(anker_x,anker_y-4);
-    port2=QPoint(anker_x,anker_y+4);
+    ports.append(QPoint(anker_x,anker_y-4));
+    ports.append(QPoint(anker_x,anker_y+4));
 }
 Inductor::~Inductor(){
     index_list.remove(index);
@@ -48,8 +48,8 @@ void Inductor::rotate(){
     this->setRotation(this->rotation()+90);
     if(fabs(rotation()-360)<1e-6)
         this->setRotation(0);
-    port1=QPoint(-(port1.y()-anker_y)+anker_x,(port1.x()-anker_x)+anker_y); //rotate 90 degrees
-    port2=QPoint(-(port2.y()-anker_y)+anker_x,(port2.x()-anker_x)+anker_y);
+    ports[0]=QPoint(-(ports[0].y()-anker_y)+anker_x,(ports[0].x()-anker_x)+anker_y); //rotate 90 degrees
+    ports[1]=QPoint(-(ports[1].y()-anker_y)+anker_x,(ports[1].x()-anker_x)+anker_y);
     qDebug() << port1 << " , " << port2 << endl;
 }
 void Inductor::moveTo(const QPointF scenePoint){
@@ -57,8 +57,8 @@ void Inductor::moveTo(const QPointF scenePoint){
     anker_x=round(scenePoint.x())/pixPerAnker;
     anker_y=round(scenePoint.y())/pixPerAnker;
     setPos(anker_x*pixPerAnker,anker_y*pixPerAnker);
-    port1+=getAnkerPoint()-oldAnker;
-    port2+=getAnkerPoint()-oldAnker;
+    ports[0]+=getAnkerPoint()-oldAnker;
+    ports[1]+=getAnkerPoint()-oldAnker;
 }
 void Inductor::set(QString cname,QString cvalue)
 {

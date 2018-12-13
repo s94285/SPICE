@@ -10,7 +10,7 @@ ground::ground(unsigned int INDEX)
     width=pixmap->width();
     height=pixmap->height();
     bound=new QRectF(-width/2.,-height/2.,width,height);
-    port1=QPoint(anker_x,anker_y-1);
+    ports.append(QPoint(anker_x,anker_y-1));
 }
 ground::~ground(){
     delete pixmap;
@@ -45,8 +45,8 @@ void ground::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
 void ground::rotate(){
     this->setRotation(this->rotation()+90);
     if(fabs(rotation()-360)<1e-6)
-        this->setRotation(0);
-    port1=QPoint(-(port1.y()-anker_y)+anker_x,(port1.x()-anker_x)+anker_y); //rotate 90 degrees
+        this->setRotation(0); 
+    ports[0]=QPoint(-(ports[0].y()-anker_y)+anker_x,(ports[0].x()-anker_x)+anker_y); //rotate 90 degrees
     qDebug() << port1 << " , " << endl;
 }
 void ground::moveTo(const QPointF scenePoint){
@@ -54,6 +54,6 @@ void ground::moveTo(const QPointF scenePoint){
     anker_x=round(scenePoint.x())/pixPerAnker;
     anker_y=round(scenePoint.y())/pixPerAnker;
     setPos(anker_x*pixPerAnker,anker_y*pixPerAnker);
-    port1+=getAnkerPoint()-oldAnker;
+     ports[0]+=getAnkerPoint()-oldAnker;
 }
 QSet<unsigned> ground::index_list;
