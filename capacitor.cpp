@@ -65,4 +65,12 @@ void Capacitor::set(QString cname,QString cvalue)
     name=cname;
     value=cvalue;
 }
+
+std::complex<double> Capacitor::getimpedance(double frequency)
+{
+    using namespace std;
+    complex<double> i(0.0,1.0);
+    complex<double> imped=-(1/(value.toDouble()*frequency))*i;
+    return  imped;
+}
 QSet<unsigned> Capacitor::index_list;

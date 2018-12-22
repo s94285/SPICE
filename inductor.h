@@ -1,6 +1,7 @@
 #ifndef INDUCTOR_H
 #define INDUCTOR_H
 #include "linearcomponent.h"
+#include <complex>
 class CircuitSimulation;
 class Inductor : public LinearComponent
 {
@@ -14,6 +15,7 @@ public:
     void rotate();
     void moveTo(const QPointF scenePoint);
     void set(QString name,QString value);
+    std::complex <double> getimpedance(double frequency);
     ~Inductor();
     friend class  CircuitSimulation;
 };

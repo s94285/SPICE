@@ -64,4 +64,11 @@ void Resistor::set(QString cname,QString cvalue)
     name=cname;
     value=cvalue;
 }
+
+std::complex<double> Resistor::getimpedance(double frequency)
+{
+    using namespace std;
+    complex<double> imped=value.toDouble();
+    return  imped;
+}
 QSet<unsigned> Resistor::index_list;

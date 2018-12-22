@@ -14,6 +14,7 @@ public:
     void rotate();
     void moveTo(const QPointF scenePoint);
     void set(QString name,QString value);
+    std::complex<double> getimpedance(double frequency);
     ~Resistor();
     friend class CircuitSimulation;
 };

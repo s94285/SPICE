@@ -10,7 +10,6 @@ class editDialog;
 class editDialog : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit editDialog(QWidget *parent = nullptr,BasicComponent *item=nullptr);
     ~editDialog();

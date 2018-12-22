@@ -65,5 +65,13 @@ void Inductor::set(QString cname,QString cvalue)
     name=cname;
     value=cvalue;
 }
+
+std::complex<double> Inductor::getimpedance(double frequency)
+{
+    using namespace std;
+    complex<double> i(0.0,1.0);
+    complex<double> imped=(value.toDouble()*frequency)*i;
+    return  imped;
+}
 QSet<unsigned> Inductor::index_list;
 
