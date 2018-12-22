@@ -50,7 +50,7 @@ void Inductor::rotate(){
         this->setRotation(0);
     ports[0]=QPoint(-(ports[0].y()-anker_y)+anker_x,(ports[0].x()-anker_x)+anker_y); //rotate 90 degrees
     ports[1]=QPoint(-(ports[1].y()-anker_y)+anker_x,(ports[1].x()-anker_x)+anker_y);
-    qDebug() << port1 << " , " << port2 << endl;
+//    qDebug() << port1 << " , " << port2 << endl;
 }
 void Inductor::moveTo(const QPointF scenePoint){
     QPoint oldAnker=QPoint(anker_x,anker_y);
@@ -66,11 +66,11 @@ void Inductor::set(QString cname,QString cvalue)
     value=cvalue;
 }
 
-std::complex<double> Inductor::getimpedance(double frequency)
+std::complex<double> Inductor::getimpedance(double  angularFrequency)
 {
     using namespace std;
     complex<double> i(0.0,1.0);
-    complex<double> imped=(value.toDouble()*frequency)*i;
+    complex<double> imped=(value.toDouble()*angularFrequency)*i;
     return  imped;
 }
 QSet<unsigned> Inductor::index_list;

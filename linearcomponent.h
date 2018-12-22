@@ -8,8 +8,8 @@ class CircuitSimulation;
 class LinearComponent : public BasicComponent
 {
 protected:
-    QPoint port1;
-    QPoint port2;
+//    QPoint port1;
+//    QPoint port2;
     double current;
 
 public:

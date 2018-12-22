@@ -37,7 +37,8 @@ SOURCES += \
     editdialog.cpp \
     sourcedialog.cpp \
     node.cpp \
-    line.cpp
+    line.cpp \
+    complexmatrix.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -54,7 +55,8 @@ HEADERS += \
     editdialog.h \
     sourcedialog.h \
     node.h \
-    line.h
+    line.h \
+    complexmatrix.h
 
 FORMS += \
         mainwindow.ui \

@@ -1,6 +1,7 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 #include "basiccomponent.h"
+#include <complex>
 class CircuitSimulation;
 enum SOURCEMODE{DC,SIN,SQUARE};
 class Source : public BasicComponent
@@ -12,7 +13,7 @@ protected:
     double DCvalue=0;
     double Von=0;
     double Vinitial=0;
-    double current;
+    QVector<QPair<std::complex<double>,double>> current;
 
     static QSet<unsigned> index_list;
 public:
@@ -26,6 +27,7 @@ public:
     void moveTo(const QPointF scenePoint);
     void getdata(QString &getamp,QString &getfreq,QString &getphase,QString &getDCValue,QString &getVon,QString &getVinitial);
     void setdata(QString getamp,QString getfreq,QString getphase,QString getDCValue,QString getVon,QString getVinitial);
+    std::complex<double> getACVoltage(){return std::complex<double>(amplitude*cos(phase/180*M_PI),amplitude*sin(phase/180*M_PI));}
 };
 
 #endif // SOURCE_H

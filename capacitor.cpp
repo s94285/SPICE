@@ -50,7 +50,7 @@ void Capacitor::rotate(){
         this->setRotation(0);
     ports[0]=QPoint(-(ports[0].y()-anker_y)+anker_x,(ports[0].x()-anker_x)+anker_y); //rotate 90 degrees
     ports[1]=QPoint(-(ports[1].y()-anker_y)+anker_x,(ports[1].x()-anker_x)+anker_y);
-    qDebug() << port1 << " , " << port2 << endl;
+//    qDebug() << port1 << " , " << port2 << endl;
 }
 void Capacitor::moveTo(const QPointF scenePoint){
     QPoint oldAnker=QPoint(anker_x,anker_y);
@@ -66,11 +66,11 @@ void Capacitor::set(QString cname,QString cvalue)
     value=cvalue;
 }
 
-std::complex<double> Capacitor::getimpedance(double frequency)
+std::complex<double> Capacitor::getimpedance(double angularFrequency)
 {
     using namespace std;
     complex<double> i(0.0,1.0);
-    complex<double> imped=-(1/(value.toDouble()*frequency))*i;
+    complex<double> imped=-(1/(value.toDouble()*angularFrequency))*i;
     return  imped;
 }
 QSet<unsigned> Capacitor::index_list;
