@@ -30,7 +30,7 @@ void Line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 {
     setPos(point1*pixPerAnker);
 
-    qDebug() << "Paint\n";
+//    qDebug() << "Paint\n";
     Q_UNUSED(option);
     Q_UNUSED(widget);
     QPen pen(Qt::black);
