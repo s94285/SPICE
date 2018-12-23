@@ -9,7 +9,7 @@ ground::ground(unsigned int INDEX)
     pixmap = new QPixmap(":/resources/ground.png");
     width=pixmap->width();
     height=pixmap->height();
-    bound=new QRectF(-width/2.,-height/2.,width,height);
+    bound=new QRectF(-width/2.,-height/2.-5,width,height+5);
     ports.append(QPoint(anker_x,anker_y-1));
 }
 ground::~ground(){

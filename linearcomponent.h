@@ -5,18 +5,19 @@
 #include <complex>
 
 class CircuitSimulation;
+class ScopeView;
 class LinearComponent : public BasicComponent
 {
 protected:
 //    QPoint port1;
 //    QPoint port2;
-    double current;
+    QVector<QPair<std::complex<double>,double>> current;
 
 public:
     LinearComponent();
     virtual std::complex<double> getimpedance(double frequency)=0;
     friend class CircuitSimulation;
-
+    friend class ScopeView;
 };
 
 #endif // LINEARCOMPONENT_H

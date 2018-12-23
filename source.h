@@ -22,6 +22,7 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     friend class CircuitSimulation;
+    friend class ScopeView;
     ~Source();
     void rotate();
     void moveTo(const QPointF scenePoint);

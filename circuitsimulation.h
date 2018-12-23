@@ -10,12 +10,13 @@
 #include "workspace.h"
 #include "line.h"
 #include <QVector>
-
+#include "scope.h"
 class CircuitSimulation : public QObject
 {
     Q_OBJECT
 private:
     MainWindow *mainWindow;
+    Scope *scopeWindow;
     QVector<BasicComponent*> components;
     QVector<Node*> nodes;
     QVector<Line*> lines;
@@ -34,6 +35,10 @@ public:
     CircuitSimulation();
     ~CircuitSimulation();
     void init();
+    void initRun();
+    void drawFunction(Node*);
+    void drawFunction(LinearComponent*);
+    void drawFunction(Source*);
 };
 
 #endif // CIRCUITSIMULATION_H

@@ -8,7 +8,7 @@ Resistor::Resistor(unsigned int INDEX)
     pixmap = new QPixmap(":/resources/resistor.png");
     width=pixmap->width();
     height=pixmap->height();
-    bound=new QRectF(-width/2.,-height/2.,width,height);
+    bound=new QRectF(-width/2.,-height/2.-5,width,height+10);
     ports.append(QPoint(anker_x,anker_y-4));
     ports.append(QPoint(anker_x,anker_y+4));
 }

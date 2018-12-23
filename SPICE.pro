@@ -38,7 +38,9 @@ SOURCES += \
     sourcedialog.cpp \
     node.cpp \
     line.cpp \
-    complexmatrix.cpp
+    complexmatrix.cpp \
+    scopeview.cpp \
+    scope.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -56,12 +58,15 @@ HEADERS += \
     sourcedialog.h \
     node.h \
     line.h \
-    complexmatrix.h
+    complexmatrix.h \
+    scopeview.h \
+    scope.h
 
 FORMS += \
         mainwindow.ui \
     editdialog.ui \
-    sourcedialog.ui
+    sourcedialog.ui \
+    scope.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

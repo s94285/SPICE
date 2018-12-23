@@ -9,10 +9,13 @@
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
+#include "scope.h"
+#include "ui_scope.h"
 CircuitSimulation::CircuitSimulation()
 {
     mainWindow=new MainWindow;
-
+    scopeWindow =new Scope;
+    scopeWindow->setStyleSheet("background-color: white;");
     //connecting buttons
     connect((mainWindow->toolBarButton)[0],SIGNAL(clicked()),this,SLOT(run()));
     connect((mainWindow->toolBarButton)[1],SIGNAL(clicked()),this,SLOT(drawLine()));
@@ -39,6 +42,39 @@ void CircuitSimulation::init(){
     workspace->setNodes(nodes);
     workspace->setLines(lines);
     workspace->drawComponents();
+    workspace->setSimulator(this);
+}
+
+void CircuitSimulation::initRun()
+{
+    scopeWindow->ui->scopeView->nodes.clear();
+    scopeWindow->ui->scopeView->linearComponents.clear();
+    scopeWindow->ui->scopeView->sources.clear();
+    scopeWindow->ui->scopeView->clear();
+}
+
+void CircuitSimulation::drawFunction(Node *aNode)
+{
+    if(scopeWindow->ui->scopeView->nodes.indexOf(aNode)>-1)return;
+    scopeWindow->ui->scopeView->nodes.append(aNode);
+    scopeWindow->ui->scopeView->clear();
+    scopeWindow->ui->scopeView->draw();
+}
+
+void CircuitSimulation::drawFunction(LinearComponent *aLC)
+{
+    if(scopeWindow->ui->scopeView->linearComponents.indexOf(aLC)>-1)return;
+    scopeWindow->ui->scopeView->linearComponents.append(aLC);
+    scopeWindow->ui->scopeView->clear();
+    scopeWindow->ui->scopeView->draw();
+}
+
+void CircuitSimulation::drawFunction(Source *as)
+{
+    if(scopeWindow->ui->scopeView->sources.indexOf(as)>-1)return;
+    scopeWindow->ui->scopeView->sources.append(as);
+    scopeWindow->ui->scopeView->clear();
+    scopeWindow->ui->scopeView->draw();
 }
 
 void CircuitSimulation::run(){
@@ -50,11 +86,18 @@ void CircuitSimulation::run(){
     try{
         int gndIndex=0;
         QVector<Source*> sources;
+        QVector<LinearComponent*> linearComponents;
         for(auto i:components){
             if(dynamic_cast<Source*>(i)){
                 sources.append(dynamic_cast<Source*>(i));
+            }else if(dynamic_cast<LinearComponent*>(i)){
+                linearComponents.append(dynamic_cast<LinearComponent*>(i));
             }
         }
+        //clean old value
+        for(auto node:nodes)node->voltage.clear();
+        for(auto source:sources)source->current.clear();
+        for(auto lc:linearComponents)lc->current.clear();
         int matrix_size=nodes.size()+sources.size();
         double angularFrequency;
         for(int currentSourceIndex=0;currentSourceIndex<sources.size();currentSourceIndex++){
@@ -142,11 +185,32 @@ void CircuitSimulation::run(){
                 nodes[i]->voltage.append(qMakePair(result[i],angularFrequency));
             for(int i=0;i<sources.size();i++)
                 sources[i]->current.append(qMakePair(result[nodes.size()+i],angularFrequency));
+            for(LinearComponent *rlc:linearComponents){
+                Node *n1=nullptr,*n2=nullptr;
+                for(Node* n:nodes){
+                    if(n->connectedPorts.indexOf(qMakePair(dynamic_cast<BasicComponent*>(rlc),&rlc->ports[0]))>-1)
+                        n1=n;
+                    else if(n->connectedPorts.indexOf(qMakePair(dynamic_cast<BasicComponent*>(rlc),&rlc->ports[1]))>-1)
+                        n2=n;
+                }
+                if(n1&&n2)
+                for(int i=0;i<n1->voltage.size();i++){
+                    if(abs(n1->voltage[i].first)>abs(n2->voltage[i].first))
+                        rlc->current.append(qMakePair((n1->voltage[i].first-n2->voltage[i].first)/rlc->getimpedance(n1->voltage[i].second),n1->voltage[i].second));
+                    else
+                        rlc->current.append(qMakePair((n2->voltage[i].first-n1->voltage[i].first)/rlc->getimpedance(n1->voltage[i].second),n1->voltage[i].second));
+                }
+            }
         }
     }catch(...){
         QMessageBox::critical(nullptr,"Error occurs","Please check your schematic");
         return;
     }
+
+    scopeWindow->ui->scopeView->runTime=runTime;
+    initRun();
+    scopeWindow->show();
+    workspace->currentMode=RUN;
 }
 void CircuitSimulation::drawLine(){
     qDebug()<<"drawLine\n";
