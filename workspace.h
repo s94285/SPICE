@@ -17,6 +17,7 @@ public:
     void setComponents(QVector<BasicComponent*> &);
     void setNodes(QVector<Node*> &NODES){nodes=&NODES;}
     void setLines(QVector<Line*> &LINES){lines=&LINES;}
+    void setSimulator(CircuitSimulation* cs){circuitSimulation=cs;}
     void drawComponents();
     friend class CircuitSimulation;
 public slots:
@@ -40,6 +41,7 @@ private:
     editDialog *dialog;
     SourceDialog *sourcedialog;
     QGraphicsLineItem *drawLineX=nullptr,*drawLineY=nullptr;
+    CircuitSimulation *circuitSimulation;
 };
 
 #endif // WORKSPACE_H

@@ -5,6 +5,7 @@
 #include <complex>
 
 class CircuitSimulation;
+class Scope;
 class LinearComponent : public BasicComponent
 {
 protected:
@@ -16,7 +17,7 @@ public:
     LinearComponent();
     virtual std::complex<double> getimpedance(double frequency)=0;
     friend class CircuitSimulation;
-
+    friend class Scope;
 };
 
 #endif // LINEARCOMPONENT_H

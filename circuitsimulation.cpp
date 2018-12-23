@@ -9,10 +9,12 @@
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
+#include "scope.h"
+#include "ui_scope.h"
 CircuitSimulation::CircuitSimulation()
 {
     mainWindow=new MainWindow;
-
+    scopeWindow =new Scope;
     //connecting buttons
     connect((mainWindow->toolBarButton)[0],SIGNAL(clicked()),this,SLOT(run()));
     connect((mainWindow->toolBarButton)[1],SIGNAL(clicked()),this,SLOT(drawLine()));
@@ -39,6 +41,21 @@ void CircuitSimulation::init(){
     workspace->setNodes(nodes);
     workspace->setLines(lines);
     workspace->drawComponents();
+    workspace->setSimulator(this);
+}
+
+void CircuitSimulation::drawFunction(Node *aNode)
+{
+    scopeWindow->ui->scopeView->nodes.append(aNode);
+    scopeWindow->ui->scopeView->clear();
+    scopeWindow->ui->scopeView->draw();
+}
+
+void CircuitSimulation::drawFunction(LinearComponent *aLC)
+{
+    scopeWindow->ui->scopeView->linearComponents.append(aLC);
+    scopeWindow->ui->scopeView->clear();
+    scopeWindow->ui->scopeView->draw();
 }
 
 void CircuitSimulation::run(){
@@ -147,6 +164,7 @@ void CircuitSimulation::run(){
         QMessageBox::critical(nullptr,"Error occurs","Please check your schematic");
         return;
     }
+    workspace->currentMode=RUN;
 }
 void CircuitSimulation::drawLine(){
     qDebug()<<"drawLine\n";

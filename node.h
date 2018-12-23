@@ -6,6 +6,7 @@
 
 class CircuitSimulation;
 class Workspace;
+class Scope;
 
 class Node : public QGraphicsItemGroup
 {
@@ -18,6 +19,7 @@ public:
     Node(QGraphicsItem * parent = nullptr);
     friend class CircuitSimulation;
     friend class Workspace;
+    friend class Scope;
 };
 
 #endif // NODE_H
