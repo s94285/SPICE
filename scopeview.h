@@ -30,7 +30,7 @@ private:
     void* lineSelected=nullptr;
     QVector<QAction*> actions;
 private slots:
-    void deleteLine();
+    void deleteLine(void *);
 };
 
 #endif // SCOPEVIEW_H
