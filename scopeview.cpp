@@ -100,8 +100,22 @@ void ScopeView::draw()
         }
     }
     if(abs(minVoltage-maxVoltage)<1e-9){
-        minVoltage=-5;
-        maxVoltage=5;
+        if(abs(minVoltage-0)<1e-9){ //zero
+            minVoltage=-5;
+            maxVoltage=5;
+        }else{                      //DC
+            if(maxVoltage<0)maxVoltage=-maxVoltage;
+            if(minVoltage>0)minVoltage=-minVoltage;
+        }
+    }
+    if(abs(minCurrent-maxCurrent)<1e-9){
+        if(abs(minCurrent-0)<1e-9){ //zero
+            minCurrent=-5;
+            maxCurrent=5;
+        }else{                      //DC
+            if(maxCurrent<0)maxCurrent=-maxCurrent;
+            if(minCurrent>0)minCurrent=-minCurrent;
+        }
     }
     if(abs(minVoltage)>abs(maxVoltage)){
         maxVoltage=-minVoltage;
@@ -113,6 +127,7 @@ void ScopeView::draw()
     }else{
         minCurrent=-maxCurrent;
     }
+    minVoltage--;maxVoltage++;minCurrent--;maxCurrent++;
     const int numOfColors=8;
     QPen diffColor[numOfColors]={QPen(Qt::blue,1),QPen(Qt::red,1),QPen(Qt::magenta,1),QPen(Qt::darkGreen,1),QPen(Qt::yellow,1),QPen(Qt::gray,1),QPen(Qt::darkMagenta,1),QPen(Qt::darkBlue,1)};
     int currentColor=0;
