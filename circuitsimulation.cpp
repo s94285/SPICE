@@ -8,9 +8,9 @@
 #include <QFormLayout>
 #include <QInputDialog>
 #include <QLabel>
-#include <QMessageBox>
 #include "scope.h"
 #include "ui_scope.h"
+#include <QMessageBox>
 CircuitSimulation::CircuitSimulation()
 {
     mainWindow=new MainWindow;
@@ -82,9 +82,13 @@ void CircuitSimulation::run(){
     qDebug()<<"Run\n";
     bool ok;
     double runTime=QInputDialog::getDouble(nullptr,"Input run time","Run time:",0,0,100000,3,&ok);
-    if(!ok)return;
+    if(runTime==0&&ok)
+    {
+        QMessageBox::critical(nullptr,tr("Error"),tr("Please check your runtime"));
+    }
+    if(!ok||runTime==0)return;
     try{
-        int gndIndex=0;
+        int gndIndex=-1;
         QVector<Source*> sources;
         QVector<LinearComponent*> linearComponents;
         for(auto i:components){
@@ -109,9 +113,9 @@ void CircuitSimulation::run(){
                 for(int j=0;j<matrix_size;j++)
                     matrix[i][j]=0;
             }
-            for(int i=0;!gndIndex&&i<nodes.size();i++)
+            for(int i=0;gndIndex==-1&&i<nodes.size();i++)
             {
-                for(int j=0;!gndIndex&&j<nodes[i]->connectedPorts.size();j++)
+                for(int j=0;gndIndex==-1&&j<nodes[i]->connectedPorts.size();j++)
                 {
                     if(dynamic_cast<ground*>(nodes[i]->connectedPorts[j].first))
                     {
@@ -119,6 +123,7 @@ void CircuitSimulation::run(){
                     }
                 }
             }
+            if(gndIndex==-1)throw 1;
             for(int i=0;i<nodes.size();i++){    //for nodal analysis
                 if(i==gndIndex){
                     matrix[i][i]=1;

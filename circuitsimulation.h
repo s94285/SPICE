@@ -11,6 +11,7 @@
 #include "line.h"
 #include <QVector>
 #include "scope.h"
+#include <QMessageBox>
 class CircuitSimulation : public QObject
 {
     Q_OBJECT
