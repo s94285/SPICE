@@ -28,9 +28,12 @@ private:
     QPainter *painter1,*painter2;
     QGraphicsPixmapItem *item;
     void* lineSelected=nullptr;
-    QVector<QAction*> actions;
-private slots:
+    QVector<QAction*> deleteActions,cursorActions;
     void deleteLine(void *);
+    void *currentCursorLine=nullptr;
+    int cursorX1,cursorX2;
+public slots:
+    void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif // SCOPEVIEW_H

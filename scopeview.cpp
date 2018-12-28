@@ -3,6 +3,7 @@
 #include <QGraphicsPixmapItem>
 #include <complex>
 #include <QDebug>
+#include <qevent.h>
 #include "scope.h"
 #include "ui_scope.h"
 using namespace std;
@@ -28,6 +29,8 @@ void ScopeView::init()
     item=scene->addPixmap(*pixmap1);
     item->setPixmap(*pixmap1);
     this->show();
+    cursorX1=this->geometry().width()/2-50;
+    cursorX2=this->geometry().width()/2+50;
 //    qDebug() << this->geometry().width()-2 << endl << this->geometry().height()-2;
 }
 
@@ -209,29 +212,102 @@ void ScopeView::draw()
     }
     //update delete menu
 
-    for(int i=0;i<actions.size();i++){
-        scope->ui->menuDelete->removeAction(actions[i]);
-        delete actions[i];
-        actions.remove(i--);
+    for(int i=0;i<deleteActions.size();i++){
+        scope->ui->menuDelete->removeAction(deleteActions[i]);
+        delete deleteActions[i];
+        deleteActions.remove(i--);
     }
     for(int i=0;i<nodes.size();i++){
         QAction *act=new QAction("V: Node "+QString::number(i));
-        actions.append(act);
+        deleteActions.append(act);
         scope->ui->menuDelete->addAction(act);
         connect(act,&QAction::triggered,this,[this,i]{deleteLine(nodes[i]);});  //use lambda functor to pass parameter
     }
     for(int i=0;i<linearComponents.size();i++){
         QAction *act=new QAction("I: "+linearComponents[i]->name);
-        actions.append(act);
+        deleteActions.append(act);
         scope->ui->menuDelete->addAction(act);
         connect(act,&QAction::triggered,this,[this,i]{deleteLine(linearComponents[i]);});
     }
     for(int i=0;i<sources.size();i++){
         QAction *act=new QAction("I: "+sources[i]->name);
-        actions.append(act);
+        deleteActions.append(act);
         scope->ui->menuDelete->addAction(act);
         connect(act,&QAction::triggered,this,[this,i]{deleteLine(sources[i]);});
     }
+
+    //update cursor menu
+    for(int i=0;i<cursorActions.size();i++){
+        scope->ui->menuCursor->removeAction(cursorActions[i]);
+        delete cursorActions[i];
+        cursorActions.remove(i--);
+    }
+    for(int i=0;i<nodes.size();i++){
+        QAction *act=new QAction("V: Node "+QString::number(i));
+        cursorActions.append(act);
+        scope->ui->menuCursor->addAction(act);
+        connect(act,&QAction::triggered,this,[this,i]{currentCursorLine=nodes[i];this->clear();this->draw();});  //use lambda functor to pass parameter
+    }
+    for(int i=0;i<linearComponents.size();i++){
+        QAction *act=new QAction("I: "+linearComponents[i]->name);
+        cursorActions.append(act);
+        scope->ui->menuCursor->addAction(act);
+        connect(act,&QAction::triggered,this,[this,i]{currentCursorLine=(linearComponents[i]);this->clear();this->draw();});
+    }
+    for(int i=0;i<sources.size();i++){
+        QAction *act=new QAction("I: "+sources[i]->name);
+        cursorActions.append(act);
+        scope->ui->menuCursor->addAction(act);
+        connect(act,&QAction::triggered,this,[this,i]{currentCursorLine=(sources[i]);this->clear();this->draw();});
+    }
+    //add delete cursor action
+    {
+        QAction *act=new QAction("Delete Cursor");
+        cursorActions.append(act);
+        scope->ui->menuCursor->addAction(act);
+        connect(act,&QAction::triggered,this,[this]{currentCursorLine=(nullptr);this->clear();this->draw();});
+    }
+    //draw cursor
+    if(currentCursorLine!=nullptr){
+        QPen oldPen=painter1->pen();
+        painter1->setPen(QPen(QBrush(Qt::black),1,Qt::DotLine));
+        painter1->drawLine(cursorX1,0,cursorX1,viewport()->height()-1);
+        painter1->drawLine(cursorX2,0,cursorX2,viewport()->height()-1);
+        currentColor=0;
+        bool find=false;
+        for(auto i:nodes){
+            if(static_cast<void*>(i)==currentCursorLine){find=true;break;}
+            currentColor++;
+        }
+        if(!find)
+            for(auto i:linearComponents){
+                if(static_cast<void*>(i)==currentCursorLine){find=true;break;}
+                currentColor++;
+            }
+        if(!find)
+            for(auto i:sources){
+                if(static_cast<void*>(i)==currentCursorLine){find=true;break;}
+                currentColor++;
+            }
+        painter1->setPen(diffColor[currentColor%numOfColors]);
+        painter1->drawText(cursorX1,painter1->fontMetrics().ascent()+10,"1");
+        painter1->drawText(cursorX2,painter1->fontMetrics().ascent()+10,"2");
+        painter1->setPen(Qt::black);
+        painter1->setBrush(Qt::white);
+        QRect toDraw(950,viewport()->height()-10-(painter1->fontMetrics().height()+5)*6,170,(painter1->fontMetrics().height()+5)*6+8);
+        painter1->drawRect(toDraw);
+        double x1,x2,dx,y1,y2,dy;
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+5+painter1->fontMetrics().ascent(),"x1: "+QString::number(x1=runTime*cursorX1/pixmap1->width())+" s");
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*2,"x2: "+QString::number(x2=runTime*cursorX2/pixmap1->width())+" s");
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*3,"dx: "+QString::number(dx=(x2-x1))+" s");
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*4,"y1: "+QString::number(y1=points[currentCursorLine][10000*cursorX1/pixmap1->width()]));
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*5,"y2: "+QString::number(y2=points[currentCursorLine][10000*cursorX2/pixmap1->width()]));
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*6,"dy: "+QString::number(dy=(y2-y1)));
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*7,"dy/dx: "+QString::number(dy/dx));
+
+        painter1->setPen(oldPen);
+    }
+    //update pixmapitem
     item->setPixmap(*pixmap1);
 }
 
@@ -259,5 +335,18 @@ void ScopeView::deleteLine(void *toDelete)
     }
     this->clear();
     this->draw();
-//    qDebug() << "break point";
+    //    qDebug() << "break point";
 }
+
+void ScopeView::mouseMoveEvent(QMouseEvent *event)
+{
+    //only called when dragging in scopeView
+    if(currentCursorLine&&event->pos().x()>=0&&event->pos().x()<viewport()->width()){
+        //update cursor location
+        ((abs(cursorX1-event->pos().x())<=abs(cursorX2-event->pos().x()))
+                ?cursorX1:cursorX2)=event->pos().x();
+        this->clear();
+        this->draw();
+    }
+}
+
