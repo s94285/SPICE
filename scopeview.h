@@ -16,7 +16,7 @@ public:
     QVector<Node*> nodes;
     QVector<LinearComponent*> linearComponents;
     QVector<Source*> sources;
-    QMap<void*,double*> points;
+    QHash<void*,double*> points;
     void clear();
     void draw();
     void setScope(Scope* sc){scope=sc;}
