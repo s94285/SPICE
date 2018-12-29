@@ -45,61 +45,24 @@ void ScopeView::clear()
 
 void ScopeView::draw()
 {
-    for(auto i:points)delete points[i];
-    points.clear();
-    double timescale=runTime/scale;
-
-    double amp;
-    double phase;
-    double angularFreq;
     double maxVoltage=-INT_MAX,minVoltage=INT_MAX;
     double maxCurrent=-INT_MAX,minCurrent=INT_MAX;
-    for(int i=0;i<nodes.size();i++)
-    {
-        points[nodes[i]]=new double[scale];
-        for(int k=0;k<scale;k++)points[nodes[i]][k]=0;
-        for(int j=0;j<nodes[i]->voltage.size();j++){
-            amp=abs(nodes[i]->voltage[j].first);
-            phase=arg(nodes[i]->voltage[j].first);
-            angularFreq=nodes[i]->voltage[j].second;
-            for(int ti=0;ti<scale;ti++){
-                double value=amp*sin(angularFreq*ti*timescale+phase);
-                points[nodes[i]][ti]+=value;
-                if(maxVoltage<points[nodes[i]][ti])maxVoltage=points[nodes[i]][ti];
-                if(minVoltage>points[nodes[i]][ti])minVoltage=points[nodes[i]][ti];
-            }
+    for(auto i:nodes){
+        for(int j=0;j<scale;j++){
+            maxVoltage=(maxVoltage<(*points)[i][j])?(*points)[i][j]:maxVoltage;
+            minVoltage=(minVoltage>(*points)[i][j])?(*points)[i][j]:minVoltage;
         }
     }
-    for(int i=0;i<linearComponents.size();i++)
-    {
-        points[linearComponents[i]]=new double[scale];
-        for(int k=0;k<scale;k++)points[linearComponents[i]][k]=0;
-        for(int j=0;j<linearComponents[i]->current.size();j++){
-            amp=abs(linearComponents[i]->current[j].first);
-            phase=arg(linearComponents[i]->current[j].first);
-            angularFreq=linearComponents[i]->current[j].second;
-            for(int ti=0;ti<scale;ti++){
-                double value=amp*sin(angularFreq*ti*timescale+phase);
-                points[linearComponents[i]][ti]+=value;
-                if(maxCurrent<points[linearComponents[i]][ti])maxCurrent=points[linearComponents[i]][ti];
-                if(minCurrent>points[linearComponents[i]][ti])minCurrent=points[linearComponents[i]][ti];
-            }
+    for(auto i:linearComponents){
+        for(int j=0;j<scale;j++){
+            maxCurrent=(maxCurrent<(*points)[i][j])?(*points)[i][j]:maxCurrent;
+            minCurrent=(minCurrent>(*points)[i][j])?(*points)[i][j]:minCurrent;
         }
     }
-    for(int i=0;i<sources.size();i++)
-    {
-        points[sources[i]]=new double[scale];
-        for(int k=0;k<scale;k++)points[sources[i]][k]=0;
-        for(int j=0;j<sources[i]->current.size();j++){
-            amp=abs(sources[i]->current[j].first);
-            phase=arg(sources[i]->current[j].first);
-            angularFreq=sources[i]->current[j].second;
-            for(int ti=0;ti<scale;ti++){
-                double value=amp*sin(angularFreq*ti*timescale+phase);
-                points[sources[i]][ti]+=value;
-                if(maxCurrent<points[sources[i]][ti])maxCurrent=points[sources[i]][ti];
-                if(minCurrent>points[sources[i]][ti])minCurrent=points[sources[i]][ti];
-            }
+    for(auto i:sources){
+        for(int j=0;j<scale;j++){
+            maxCurrent=(maxCurrent<(*points)[i][j])?(*points)[i][j]:maxCurrent;
+            minCurrent=(minCurrent>(*points)[i][j])?(*points)[i][j]:minCurrent;
         }
     }
     if(abs(minVoltage-maxVoltage)<1e-9){
@@ -137,9 +100,9 @@ void ScopeView::draw()
         painter1->setPen(diffColor[currentColor]);
         for(int i=1;i<scale;i++){
             painter1->drawLine(static_cast<int>(1.*(i-1)/scale*pixmap1->width()+0.5),
-                               static_cast<int>((maxVoltage-points[nodes[n]][i-1])/(maxVoltage-minVoltage)*pixmap1->height()),
+                               static_cast<int>((maxVoltage-(*points)[nodes[n]][i-1])/(maxVoltage-minVoltage)*pixmap1->height()),
                     static_cast<int>(1.*i/scale*pixmap1->width()+0.5),
-                                static_cast<int>((maxVoltage-points[nodes[n]][i])/(maxVoltage-minVoltage)*pixmap1->height()));
+                                static_cast<int>((maxVoltage-(*points)[nodes[n]][i])/(maxVoltage-minVoltage)*pixmap1->height()));
         }
         currentColor=(currentColor+1)%numOfColors;
     }
@@ -147,9 +110,9 @@ void ScopeView::draw()
         painter1->setPen(diffColor[currentColor]);
         for(int i=1;i<scale;i++){
             painter1->drawLine(static_cast<int>(1.*(i-1)/scale*pixmap1->width()+0.5),
-                               static_cast<int>((maxCurrent-points[linearComponents[l]][i-1])/(maxCurrent-minCurrent)*pixmap1->height()),
+                               static_cast<int>((maxCurrent-(*points)[linearComponents[l]][i-1])/(maxCurrent-minCurrent)*pixmap1->height()),
                     static_cast<int>(1.*i/scale*pixmap1->width()+0.5),
-                    static_cast<int>((maxCurrent-points[linearComponents[l]][i])/(maxCurrent-minCurrent)*pixmap1->height()));
+                    static_cast<int>((maxCurrent-(*points)[linearComponents[l]][i])/(maxCurrent-minCurrent)*pixmap1->height()));
         }
         currentColor=(currentColor+1)%numOfColors;
     }
@@ -157,9 +120,9 @@ void ScopeView::draw()
         painter1->setPen(diffColor[currentColor]);
         for(int i=1;i<scale;i++){
             painter1->drawLine(static_cast<int>(1.*(i-1)/scale*pixmap1->width()+0.5),
-                               static_cast<int>((maxCurrent-points[sources[s]][i-1])/(maxCurrent-minCurrent)*pixmap1->height()),
+                               static_cast<int>((maxCurrent-(*points)[sources[s]][i-1])/(maxCurrent-minCurrent)*pixmap1->height()),
                     static_cast<int>(1.*i/scale*pixmap1->width()+0.5),
-                    static_cast<int>((maxCurrent-points[sources[s]][i])/(maxCurrent-minCurrent)*pixmap1->height()));
+                    static_cast<int>((maxCurrent-(*points)[sources[s]][i])/(maxCurrent-minCurrent)*pixmap1->height()));
         }
         currentColor=(currentColor+1)%numOfColors;
     }
@@ -299,8 +262,8 @@ void ScopeView::draw()
         painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+5+painter1->fontMetrics().ascent(),"x1: "+QString::number(x1=runTime*cursorX1/pixmap1->width())+" s");
         painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*2,"x2: "+QString::number(x2=runTime*cursorX2/pixmap1->width())+" s");
         painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*3,"dx: "+QString::number(dx=(x2-x1))+" s");
-        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*4,"y1: "+QString::number(y1=points[currentCursorLine][10000*cursorX1/pixmap1->width()]));
-        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*5,"y2: "+QString::number(y2=points[currentCursorLine][10000*cursorX2/pixmap1->width()]));
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*4,"y1: "+QString::number(y1=(*points)[currentCursorLine][10000*cursorX1/pixmap1->width()]));
+        painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*5,"y2: "+QString::number(y2=(*points)[currentCursorLine][10000*cursorX2/pixmap1->width()]));
         painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*6,"dy: "+QString::number(dy=(y2-y1)));
         painter1->drawText(toDraw.topLeft().x()+5,toDraw.topLeft().y()+(5+painter1->fontMetrics().ascent())*7,"dy/dx: "+QString::number(dy/dx));
 
