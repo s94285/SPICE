@@ -79,9 +79,11 @@ void Source::getdata(QString &getamp, QString &getfreq, QString &getphase, QStri
 void Source::setdata(QString getamp, QString getfreq, QString getphase, QString getDCValue, QString getVon, QString getVinitial){
     double *temparr[6]={&amplitude,&freq,&phase,&DCvalue,&Von,&Vinitial};
     QString tempgetarr[6]={getamp,getfreq,getphase,getDCValue,getVon,getVinitial};
+
     for(int i=0;i<6;i++)
     {
-        *(temparr[i])=tempgetarr[i].toDouble();
+        QString s=BasicComponent::alphabet(tempgetarr[i]);
+        *(temparr[i])=s.toDouble();
         //*(&amplitude)=tempgetarr[0].toDouble();
 
     }

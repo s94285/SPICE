@@ -70,7 +70,8 @@ std::complex<double> Inductor::getimpedance(double  angularFrequency)
 {
     using namespace std;
     complex<double> i(0.0,1.0);
-    complex<double> imped=(value.toDouble()*angularFrequency)*i;
+    QString s=BasicComponent::alphabet(value);
+    complex<double> imped=(s.toDouble()*angularFrequency)*i;
     return  imped;
 }
 QSet<unsigned> Inductor::index_list;

@@ -30,6 +30,7 @@ public:
     virtual void rotate()=0;
     virtual void moveTo(const QPointF scenePoint)=0;
     void set(QString name,QString value);
+    QString alphabet(QString s);
     const QString getName()const{return name;}
     const QString getValue()const{return value;}
     friend class CircuitSimulation;

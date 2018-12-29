@@ -1,6 +1,7 @@
 #include "basiccomponent.h"
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
+#include "QString"
 BasicComponent::BasicComponent()
 {
     anker_x=anker_y=0;
@@ -25,8 +26,46 @@ void BasicComponent::mousePressEvent(QGraphicsSceneMouseEvent *event){
 }
 void BasicComponent::set(QString cname,QString cvalue)
 {
+
     name=cname;
     value=cvalue;
+
+
+}
+
+QString BasicComponent::alphabet(QString s)
+{
+    QString stemp;
+    stemp=s;
+    if(stemp[stemp.length()-1]=="k")
+    {
+        stemp.remove("k");
+        double temp=stemp.toDouble();
+        temp*=1000;
+        stemp=QString::number(temp);
+    }
+    else if(stemp[stemp.length()-1]=="m")
+    {
+        stemp.remove("m");
+        double temp=stemp.toDouble();
+        temp*=0.001;
+        stemp=QString::number(temp);
+    }
+    else if(stemp[stemp.length()-1]=="u")
+    {
+        stemp.remove("u");
+        double temp=stemp.toDouble();
+        temp*=0.000001;
+        stemp=QString::number(temp);
+    }
+    else if(stemp[stemp.length()-1]=="n")
+    {
+        stemp.remove("n");
+        double temp=stemp.toDouble();
+        temp*=0.000000001;
+        stemp=QString::number(temp);
+    }
+        return stemp;
 }
 
 QPoint *BasicComponent::getPortByScenePoint(const QPointF &itemPoint)

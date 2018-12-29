@@ -27,7 +27,7 @@ void Capacitor::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,Q
     Q_UNUSED(widget);
     painter->drawPixmap(-width/2,-height/2,*pixmap);
     qreal currentRotation = rotation();
-   // qDebug() << "Rotation = " << currentRotation << endl;
+    qDebug() << "Rotation = " << currentRotation << endl;
     painter->rotate(-currentRotation);
     if(fabs(rotation()-0)<1e-6){
         painter->drawText(21,-46,name);
@@ -70,7 +70,8 @@ std::complex<double> Capacitor::getimpedance(double angularFrequency)
 {
     using namespace std;
     complex<double> i(0.0,1.0);
-    complex<double> imped=-(1/(value.toDouble()*angularFrequency))*i;
+    QString s=BasicComponent::alphabet(value);
+    complex<double> imped=-(1/(s.toDouble()*angularFrequency))*i;
     return  imped;
 }
 QSet<unsigned> Capacitor::index_list;

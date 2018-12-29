@@ -68,7 +68,8 @@ void Resistor::set(QString cname,QString cvalue)
 std::complex<double> Resistor::getimpedance(double angularFrequency)
 {
     using namespace std;
-    complex<double> imped=value.toDouble();
+    QString s=BasicComponent::alphabet(value);
+    complex<double> imped=s.toDouble();
     return  imped;
 }
 QSet<unsigned> Resistor::index_list;

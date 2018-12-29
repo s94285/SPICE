@@ -130,7 +130,6 @@ void ScopeView::draw()
     }else{
         minCurrent=-maxCurrent;
     }
-    minVoltage--;maxVoltage++;minCurrent--;maxCurrent++;
     const int numOfColors=8;
     QPen diffColor[numOfColors]={QPen(Qt::blue,1),QPen(Qt::red,1),QPen(Qt::magenta,1),QPen(Qt::darkGreen,1),QPen(Qt::yellow,1),QPen(Qt::gray,1),QPen(Qt::darkMagenta,1),QPen(Qt::darkBlue,1)};
     int currentColor=0;
