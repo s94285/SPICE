@@ -25,7 +25,7 @@ void ground::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     Q_UNUSED(widget);
     painter->drawPixmap(-width/2,-height/2,*pixmap);
     qreal currentRotation = rotation();
-    qDebug() << "Rotation = " << currentRotation << endl;
+   // qDebug() << "Rotation = " << currentRotation << endl;
     painter->rotate(-currentRotation);
     /*if(fabs(rotation()-0)<1e-6){
         painter->drawText(21,-46,name);
@@ -47,7 +47,7 @@ void ground::rotate(){
     if(fabs(rotation()-360)<1e-6)
         this->setRotation(0); 
     ports[0]=QPoint(-(ports[0].y()-anker_y)+anker_x,(ports[0].x()-anker_x)+anker_y); //rotate 90 degrees
-    qDebug() << port1 << " , " << endl;
+    //qDebug() << port1 << " , " << endl;
 }
 void ground::moveTo(const QPointF scenePoint){
     QPoint oldAnker=QPoint(anker_x,anker_y);

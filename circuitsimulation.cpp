@@ -91,12 +91,43 @@ void CircuitSimulation::run(){
         int gndIndex=-1;
         QVector<Source*> sources;
         QVector<LinearComponent*> linearComponents;
+
+
         for(auto i:components){
             if(dynamic_cast<Source*>(i)){
                 sources.append(dynamic_cast<Source*>(i));
             }else if(dynamic_cast<LinearComponent*>(i)){
                 linearComponents.append(dynamic_cast<LinearComponent*>(i));
             }
+        }
+        for(int sourceIndex=0;sourceIndex<sources.size();sourceIndex++){
+            Node *n1=nullptr,*n2=nullptr;
+            for(Node *i:nodes)
+                if(i->connectedPorts.indexOf(qMakePair(static_cast<BasicComponent*>(sources[sourceIndex]),&sources[sourceIndex]->ports[0]))>-1)
+                    n1=i;
+            for(Node *i:nodes)
+                if(i->connectedPorts.indexOf(qMakePair(static_cast<BasicComponent*>(sources[sourceIndex]),&sources[sourceIndex]->ports[1]))>-1)
+                    n2=i;
+            if(((!n1)&&n2)||(n1&&(!n2)))
+                    throw ("source");
+            else if(!(n1&&n2))
+            {
+                sources.erase(sources.begin()+sourceIndex);
+                sourceIndex--;
+                qDebug()<<" source bug"<<endl;
+            }
+        }
+        for(LinearComponent *rlc:linearComponents){
+            Node *n1=nullptr,*n2=nullptr;
+            for(Node* n:nodes){
+                if(n->connectedPorts.indexOf(qMakePair(dynamic_cast<BasicComponent*>(rlc),&rlc->ports[0]))>-1)
+                    n1=n;
+                else if(n->connectedPorts.indexOf(qMakePair(dynamic_cast<BasicComponent*>(rlc),&rlc->ports[1]))>-1)
+                    n2=n;
+            }
+            if(((!n1)&&n2)||(n1&&(!n2)))
+                    throw 0.1 ;
+
         }
         //clean old value
         for(auto node:nodes)node->voltage.clear();
@@ -124,6 +155,7 @@ void CircuitSimulation::run(){
                 }
             }
             if(gndIndex==-1)throw 1;
+
             for(int i=0;i<nodes.size();i++){    //for nodal analysis
                 if(i==gndIndex){
                     matrix[i][i]=1;
@@ -207,8 +239,18 @@ void CircuitSimulation::run(){
                 }
             }
         }
-    }catch(...){
-        QMessageBox::critical(nullptr,"Error occurs","Please check your schematic");
+    }catch(int x){
+
+        QMessageBox::critical(nullptr,"Error occurs","Please check your ground");
+        return;
+    }
+    catch(const char *s){
+        QMessageBox::critical(nullptr,"Error occurs","Please check your source connection");
+        return;
+    }
+    catch(double d)
+    {
+        QMessageBox::critical(nullptr,"Error occurs","Please check your components connection");
         return;
     }
 

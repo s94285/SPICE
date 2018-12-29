@@ -26,7 +26,7 @@ void Source::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     Q_UNUSED(widget);
     painter->drawPixmap(-width/2,-height/2,*pixmap);
     qreal currentRotation = rotation();
-    qDebug() << "Rotation = " << currentRotation << endl;
+   // qDebug() << "Rotation = " << currentRotation << endl;
     painter->rotate(-currentRotation);
     if(fabs(rotation()-0)<1e-6){
         painter->drawText(21,-46,name);
@@ -49,7 +49,7 @@ void Source::rotate(){
         this->setRotation(0);
     ports[0]=QPoint(-(ports[0].y()-anker_y)+anker_x,(ports[0].x()-anker_x)+anker_y); //rotate 90 degrees
     ports[1]=QPoint(-(ports[1].y()-anker_y)+anker_x,(ports[1].x()-anker_x)+anker_y);
-    qDebug() << ports[0] << " , " << ports[1] << endl;
+   // qDebug() << ports[0] << " , " << ports[1] << endl;
 }
 void Source::moveTo(const QPointF scenePoint){
     QPoint oldAnker=QPoint(anker_x,anker_y);
@@ -63,7 +63,7 @@ void Source::moveTo(const QPointF scenePoint){
 void Source::getdata(QString &getamp, QString &getfreq, QString &getphase, QString &getDCValue, QString &getVon, QString &getVinitial){
     double temp;
     double temparr[6]={amplitude,freq,phase,DCvalue,Von,Vinitial};
-    qDebug() << temparr[0] << endl;
+   // qDebug() << temparr[0] << endl;
     QString *tempgetarr[6]={&getamp,&getfreq,&getphase,&getDCValue,&getVon,&getVinitial};
     for(int i=0;i<6;i++)
     {

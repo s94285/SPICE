@@ -27,7 +27,7 @@ void Capacitor::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,Q
     Q_UNUSED(widget);
     painter->drawPixmap(-width/2,-height/2,*pixmap);
     qreal currentRotation = rotation();
-    qDebug() << "Rotation = " << currentRotation << endl;
+   // qDebug() << "Rotation = " << currentRotation << endl;
     painter->rotate(-currentRotation);
     if(fabs(rotation()-0)<1e-6){
         painter->drawText(21,-46,name);
