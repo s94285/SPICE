@@ -15,6 +15,7 @@
 class CircuitSimulation : public QObject
 {
     Q_OBJECT
+    const static int scale=10000;
 private:
     MainWindow *mainWindow;
     Scope *scopeWindow;
@@ -22,6 +23,7 @@ private:
     QVector<Node*> nodes;
     QVector<Line*> lines;
     Workspace *workspace;
+    QHash<void*,double*> points;
 private slots:
     void run();
     void drawLine();
