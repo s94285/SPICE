@@ -233,19 +233,14 @@ void CircuitSimulation::run(){
                             n2=n;
                     }
                     if(n1&&n2)
-                    for(int i=0;i<n1->voltage.size();i++){
-                        if(abs(n1->voltage[i].first)>abs(n2->voltage[i].first))
-                            rlc->current.append(qMakePair((n1->voltage[i].first-n2->voltage[i].first)/rlc->getimpedance(n1->voltage[i].second),n1->voltage[i].second));
-                        else
-                            rlc->current.append(qMakePair((n2->voltage[i].first-n1->voltage[i].first)/rlc->getimpedance(n1->voltage[i].second),n1->voltage[i].second));
-                    }
+                        rlc->current.append(qMakePair((n1->voltage.last().first-n2->voltage.last().first)/rlc->getimpedance(n1->voltage.last().second),n1->voltage.last().second));
                 }
             }else if(sources[currentSourceIndex]->currentMode==SQUARE){
                 double baseAngularFrequency=sources[currentSourceIndex]->freq*2*M_PI;  //base freq
                 double oldAmplitude=sources[currentSourceIndex]->amplitude;     //backup
                 double oldPhase=sources[currentSourceIndex]->phase;
                 sources[currentSourceIndex]->phase=0;
-                for(int k=1;k<200;k+=2){     //square is composited by odd harmonics
+                for(int k=1;k<1000;k+=2){     //square is composited by odd harmonics
                     angularFrequency=baseAngularFrequency*k;
                     sources[currentSourceIndex]->amplitude=2*(sources[currentSourceIndex]->Von-sources[currentSourceIndex]->Vinitial)/(M_PI*k);
                     complex<double> **matrix=new complex<double>*[matrix_size];
@@ -326,6 +321,7 @@ void CircuitSimulation::run(){
                         for(int j=0;j<matrix_size;j++)
                             result[i]+=inverse[i][j]*constVector[j];
                     }
+                    for(int i=0;i<matrix_size;i++)qDebug() << result[i].real() << " , " << result[i].imag();
                     //write value
                     for(int i=0;i<nodes.size();i++)
                         nodes[i]->voltage.append(qMakePair(result[i],angularFrequency));
@@ -340,12 +336,7 @@ void CircuitSimulation::run(){
                                 n2=n;
                         }
                         if(n1&&n2)
-                        for(int i=0;i<n1->voltage.size();i++){
-                            if(abs(n1->voltage[i].first)>abs(n2->voltage[i].first))
-                                rlc->current.append(qMakePair((n1->voltage[i].first-n2->voltage[i].first)/rlc->getimpedance(n1->voltage[i].second),n1->voltage[i].second));
-                            else
-                                rlc->current.append(qMakePair((n2->voltage[i].first-n1->voltage[i].first)/rlc->getimpedance(n1->voltage[i].second),n1->voltage[i].second));
-                        }
+                            rlc->current.append(qMakePair((n1->voltage.last().first-n2->voltage.last().first)/rlc->getimpedance(n1->voltage.last().second),n1->voltage.last().second));
                     }
                 }
                 sources[currentSourceIndex]->amplitude=oldAmplitude;
@@ -353,7 +344,6 @@ void CircuitSimulation::run(){
             }
         }
     }catch(int x){
-
         QMessageBox::critical(nullptr,"Error occurs","Please check your ground");
         return;
     }
@@ -364,6 +354,9 @@ void CircuitSimulation::run(){
     catch(double d)
     {
         QMessageBox::critical(nullptr,"Error occurs","Please check your components connection");
+        return;
+    }catch(...){
+        QMessageBox::critical(nullptr,"Error occurs","Unexpected error");
         return;
     }
     //evaluate points
