@@ -341,6 +341,113 @@ void CircuitSimulation::run(){
                 }
                 sources[currentSourceIndex]->amplitude=oldAmplitude;
                 sources[currentSourceIndex]->phase=oldPhase;
+            }else if(sources[currentSourceIndex]->currentMode==DC){
+                double baseAngularFrequency=M_PI*2./1e6;  //base freq with large time
+                double oldAmplitude=sources[currentSourceIndex]->amplitude;     //backup
+                double oldPhase=sources[currentSourceIndex]->phase;
+                sources[currentSourceIndex]->phase=90;  //cosine
+                qDebug() << "DC is: " << sources[currentSourceIndex]->DCvalue;
+                for(int k=1;k<1000;k++){     //DC
+                    angularFrequency=baseAngularFrequency*k;
+                    sources[currentSourceIndex]->amplitude=4.0*sources[currentSourceIndex]->DCvalue*sin(M_PI*k/2)/(M_PI*k);
+                    complex<double> **matrix=new complex<double>*[matrix_size];
+                    complex<double> *constVector=new complex<double>[matrix_size];
+                    for(int i=0;i<matrix_size;i++){
+                        matrix[i]=new complex <double>[matrix_size];
+                        for(int j=0;j<matrix_size;j++)
+                            matrix[i][j]=0;
+                    }
+                    for(int i=0;gndIndex==-1&&i<nodes.size();i++)
+                    {
+                        for(int j=0;gndIndex==-1&&j<nodes[i]->connectedPorts.size();j++)
+                        {
+                            if(dynamic_cast<ground*>(nodes[i]->connectedPorts[j].first))
+                            {
+                                gndIndex=i;
+                            }
+                        }
+                    }
+                    if(gndIndex==-1)throw 1;
+
+                    for(int i=0;i<nodes.size();i++){    //for nodal analysis
+                        if(i==gndIndex){
+                            matrix[i][i]=1;
+                            constVector[i]=0;
+                            continue;
+                        }
+                        //TODO:write m[i][i]
+                        for(auto &port:nodes[i]->connectedPorts){
+                            BasicComponent *bc=port.first;
+                            Source *sc=dynamic_cast<Source*>(bc);
+                            LinearComponent *lc=dynamic_cast<LinearComponent*>(bc);
+                            if(sc){
+                                if(sc->ports.indexOf(*port.second)==0)
+                                    matrix[i][nodes.size()+sources.indexOf(sc)]=1;
+                                else
+                                    matrix[i][nodes.size()+sources.indexOf(sc)]=-1;
+                            }else if(lc){
+                                matrix[i][i]+=1./lc->getimpedance(angularFrequency);
+                                QPoint *adjacentPort;
+                                for(auto &pt:lc->ports)
+                                    if(&pt!=port.second)
+                                        adjacentPort=&pt;
+                                int adjacentNodeIndex;
+                                for(adjacentNodeIndex=0;adjacentNodeIndex<nodes.size();adjacentNodeIndex++){
+                                    if(adjacentNodeIndex==i)continue;   //skip self node
+                                    if(nodes[adjacentNodeIndex]->connectedPorts.indexOf(qMakePair(bc,adjacentPort))>-1){
+                                        break;
+                                    }
+                                }
+                                if(adjacentNodeIndex>=nodes.size())qDebug() << "adj error";
+                                matrix[i][adjacentNodeIndex]+=-1./lc->getimpedance(angularFrequency);
+                            }
+                        }
+                    }
+                    //additional imformation from voltage source
+                    for(int sourceIndex=0;sourceIndex<sources.size();sourceIndex++){
+                        Node *n1,*n2;
+                        for(Node *i:nodes)
+                            if(i->connectedPorts.indexOf(qMakePair(static_cast<BasicComponent*>(sources[sourceIndex]),&sources[sourceIndex]->ports[0]))>-1)
+                                n1=i;
+                        for(Node *i:nodes)
+                            if(i->connectedPorts.indexOf(qMakePair(static_cast<BasicComponent*>(sources[sourceIndex]),&sources[sourceIndex]->ports[1]))>-1)
+                                n2=i;
+                        matrix[nodes.size()+sourceIndex][nodes.indexOf(n1)]=1;
+                        matrix[nodes.size()+sourceIndex][nodes.indexOf(n2)]=-1;
+                        constVector[nodes.size()+sourceIndex]=(sourceIndex==currentSourceIndex)?sources[sourceIndex]->getACVoltage():0;
+                    }
+                    //calculate result
+                    complex<double> **inverse=new complex<double>*[matrix_size];
+                    for(int i=0;i<matrix_size;i++){
+                        inverse[i]=new complex<double>[matrix_size];
+                    }
+                    ComplexMatrix::getInverse(matrix,inverse,matrix_size);
+                    complex<double> *result=new complex<double>[matrix_size];
+                    for(int i=0;i<matrix_size;i++){
+                        result[i]=0;
+                        for(int j=0;j<matrix_size;j++)
+                            result[i]+=inverse[i][j]*constVector[j];
+                    }
+                    for(int i=0;i<matrix_size;i++)qDebug() << result[i].real() << " , " << result[i].imag();
+                    //write value
+                    for(int i=0;i<nodes.size();i++)
+                        nodes[i]->voltage.append(qMakePair(result[i],angularFrequency));
+                    for(int i=0;i<sources.size();i++)
+                        sources[i]->current.append(qMakePair(result[nodes.size()+i],angularFrequency));
+                    for(LinearComponent *rlc:linearComponents){
+                        Node *n1=nullptr,*n2=nullptr;
+                        for(Node* n:nodes){
+                            if(n->connectedPorts.indexOf(qMakePair(dynamic_cast<BasicComponent*>(rlc),&rlc->ports[0]))>-1)
+                                n1=n;
+                            else if(n->connectedPorts.indexOf(qMakePair(dynamic_cast<BasicComponent*>(rlc),&rlc->ports[1]))>-1)
+                                n2=n;
+                        }
+                        if(n1&&n2)
+                            rlc->current.append(qMakePair((n1->voltage.last().first-n2->voltage.last().first)/rlc->getimpedance(n1->voltage.last().second),n1->voltage.last().second));
+                    }
+                }
+                sources[currentSourceIndex]->amplitude=oldAmplitude;
+                sources[currentSourceIndex]->phase=oldPhase;
             }
         }
     }catch(int x){

@@ -83,16 +83,16 @@ void ScopeView::draw()
             if(minCurrent>0)minCurrent=-minCurrent;
         }
     }
-    if(abs(minVoltage)>abs(maxVoltage)){
-        maxVoltage=-minVoltage;
-    }else{
-        minVoltage=-maxVoltage;
-    }
-    if(abs(minCurrent)>abs(maxCurrent)){
-        maxCurrent=-minCurrent;
-    }else{
-        minCurrent=-maxCurrent;
-    }
+//    if(abs(minVoltage)>abs(maxVoltage)){
+//        maxVoltage=-minVoltage;
+//    }else{
+//        minVoltage=-maxVoltage;
+//    }
+//    if(abs(minCurrent)>abs(maxCurrent)){
+//        maxCurrent=-minCurrent;
+//    }else{
+//        minCurrent=-maxCurrent;
+//    }
     const int numOfColors=8;
     QPen diffColor[numOfColors]={QPen(Qt::blue,1),QPen(Qt::red,1),QPen(Qt::magenta,1),QPen(Qt::darkGreen,1),QPen(Qt::yellow,1),QPen(Qt::gray,1),QPen(Qt::darkMagenta,1),QPen(Qt::darkBlue,1)};
     int currentColor=0;
@@ -163,11 +163,11 @@ void ScopeView::draw()
     //set label
     for(int i=0;i<11;i++){
         if(nodes.size()>0)
-            scope->labelVoltage[i]->setText(QString::number(minVoltage+(maxVoltage-minVoltage)/10*i));
+            scope->labelVoltage[i]->setText(QString::number(minVoltage+(maxVoltage-minVoltage)/10*i,'g',4));
         else
             scope->labelVoltage[i]->setText("");
         if(linearComponents.size()>0||sources.size()>0)
-            scope->labelCurrent[i]->setText(QString::number(minCurrent+(maxCurrent-minCurrent)/10*i));
+            scope->labelCurrent[i]->setText(QString::number(minCurrent+(maxCurrent-minCurrent)/10*i,'g',4));
         else
             scope->labelCurrent[i]->setText("");
         scope->labelTime[i]->setText(QString::number(runTime/10*i));

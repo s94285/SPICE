@@ -71,7 +71,7 @@ QString BasicComponent::alphabet(QString s)
 QPoint *BasicComponent::getPortByScenePoint(const QPointF &itemPoint)
 {
     for(QPoint &pt:ports){
-       // qDebug() << pt << endl;
+//        qDebug() << pt << endl;
         if(round(itemPoint.x()/pixPerAnker)==pt.x()&&round(itemPoint.y()/pixPerAnker)==pt.y()){
             return &pt;
         }
