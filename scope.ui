@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string notr="true">Scope</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
