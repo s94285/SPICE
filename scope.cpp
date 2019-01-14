@@ -1,5 +1,7 @@
 #include "scope.h"
 #include "ui_scope.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 Scope::Scope(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Scope)
@@ -27,4 +29,13 @@ Scope::Scope(QWidget *parent) :
 Scope::~Scope()
 {
     delete ui;
+}
+
+void Scope::closeEvent(QCloseEvent *event)
+{
+    MainWindow *mainWindow = dynamic_cast<MainWindow*>(this->parent());
+    if(mainWindow){
+        mainWindow->ui->workspace->currentMode=IDLE;
+    }
+    QMainWindow::closeEvent(event);
 }

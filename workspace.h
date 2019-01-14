@@ -9,6 +9,7 @@ class editDialog;
 class SourceDialog;
 class Node;
 class Line;
+class Scope;
 class Workspace : public QGraphicsView
 {
 public:
@@ -20,6 +21,7 @@ public:
     void setSimulator(CircuitSimulation* cs){circuitSimulation=cs;}
     void drawComponents();
     friend class CircuitSimulation;
+    friend class Scope;
 public slots:
     void enterEvent(QEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

@@ -15,7 +15,7 @@
 CircuitSimulation::CircuitSimulation()
 {
     mainWindow=new MainWindow;
-    scopeWindow =new Scope;
+    scopeWindow =new Scope(mainWindow);
     scopeWindow->setStyleSheet("background-color: white;");
     //connecting buttons
     connect((mainWindow->toolBarButton)[0],SIGNAL(clicked()),this,SLOT(newFile()));
@@ -523,6 +523,8 @@ void CircuitSimulation::run(){
     scopeWindow->ui->scopeView->runTime=runTime;
     initRun();
     scopeWindow->show();
+    scopeWindow->raise();
+    scopeWindow->activateWindow();
     workspace->currentMode=RUN;
 }
 void CircuitSimulation::drawLine(){

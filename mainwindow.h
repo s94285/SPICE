@@ -16,6 +16,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     friend class CircuitSimulation;
+    friend class Scope;
 private:
     Ui::MainWindow *ui;
     QPushButton *toolBarButton[12];

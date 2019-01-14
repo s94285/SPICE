@@ -74,7 +74,7 @@ void Workspace::mousePressEvent(QMouseEvent *event){
     if(itemOnTop)qDebug() << "Clicked On Item";
     if(dynamic_cast<Node*>(itemOnTop))qDebug() << "Clicked on node";
     if(dynamic_cast<Line*>(itemOnTop))qDebug() << "Clicked on line with node: " << dynamic_cast<Node*>(dynamic_cast<Line*>(itemOnTop)->group());
-    if(event->button()==Qt::RightButton&&(itemOnTop==nullptr)){
+    if(event->button()==Qt::RightButton&&(itemOnTop==nullptr)&&currentMode!=RUN){
         currentMode=IDLE;
         viewport()->setCursor(Qt::CrossCursor);
 

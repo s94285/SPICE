@@ -20,6 +20,8 @@ public:
 private:
     Ui::Scope *ui;
     QLabel *labelVoltage[11],*labelCurrent[11],*labelTime[11];
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // SCOPE_H
