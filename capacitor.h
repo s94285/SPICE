@@ -18,6 +18,8 @@ public:
     std::complex <double> getimpedance(double frequency);
     ~Capacitor();
     friend class CircuitSimulation;
+    friend QDataStream& operator<<( QDataStream&, const Capacitor& );
+    friend QDataStream& operator>>( QDataStream&, Capacitor& );
 };
 
 #endif // CAPACITOR_H

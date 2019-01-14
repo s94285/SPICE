@@ -17,6 +17,17 @@ Source::~Source(){
     delete pixmap;
     delete bound;
 }
+QDataStream &operator<<(QDataStream &qs, const Source &s)
+{
+    qs << static_cast<const BasicComponent&>(s);
+    qs << s.amplitude << s.freq << s.phase << s.DCvalue<< s.Von << s.Vinitial << s.index_list;
+}
+
+QDataStream &operator>>(QDataStream &qs, Source &s)
+{
+    qs >> static_cast<BasicComponent&>(s);
+    qs >> s.amplitude >> s.freq >> s.phase >> s.DCvalue >> s.Von >> s.Vinitial >> s.index_list;
+}
 
 QRectF Source::boundingRect() const{
     return *bound;

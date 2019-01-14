@@ -4,7 +4,6 @@
 class CircuitSimulation;
 class ground : public BasicComponent
 {
-    QPoint port1;
     static QSet<unsigned> index_list;
 public:
     ground(unsigned int INDEX);
@@ -14,6 +13,8 @@ public:
     void moveTo(const QPointF scenePoint);
     ~ground();
     friend class CircuitSimulation;
+    friend QDataStream& operator<<( QDataStream&, const ground& );
+    friend QDataStream& operator>>( QDataStream&, ground& );
 };
 
 #endif // GROUND_H

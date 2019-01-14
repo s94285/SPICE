@@ -19,6 +19,18 @@ Capacitor::~Capacitor(){
     delete bound;
 }
 
+QDataStream &operator<<(QDataStream &qs, const Capacitor &c)
+{
+    qs << static_cast<const LinearComponent&>(c);
+    qs << c.capacitance << c.index_list;
+}
+
+QDataStream &operator>>(QDataStream &qs, Capacitor &c)
+{
+    qs >> static_cast<LinearComponent&>(c);
+    qs >> c.capacitance >> c.index_list;
+}
+
 QRectF Capacitor::boundingRect() const{
     return *bound;
 }

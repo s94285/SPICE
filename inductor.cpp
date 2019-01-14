@@ -18,7 +18,17 @@ Inductor::~Inductor(){
     delete pixmap;
     delete bound;
 }
+QDataStream &operator<<(QDataStream &qs, const Inductor &i)
+{
+    qs << static_cast<const LinearComponent&>(i);
+    qs << i.inductance << i.index_list;
+}
 
+QDataStream &operator>>(QDataStream &qs, Inductor &i)
+{
+    qs >> static_cast<LinearComponent&>(i);
+    qs >> i.inductance >> i.index_list;
+}
 QRectF Inductor::boundingRect() const{
     return *bound;
 }

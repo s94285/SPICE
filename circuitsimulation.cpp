@@ -618,6 +618,7 @@ void CircuitSimulation::openFile()
         Resistor* resistor = new Resistor(0);
         openStream >> (*resistor);
         components.append(resistor);
+
     }
     workspace->drawComponents();
 }
@@ -639,6 +640,11 @@ void CircuitSimulation::saveFile()
         if(resistor){
             saveStream << (*resistor);
         }
+        Capacitor* capacitor=dynamic_cast<Capacitor*>(i);
+        if(capacitor){
+            saveStream << (*capacitor);
+        }
+
     }
     saveFile.close();
 }

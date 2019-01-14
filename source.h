@@ -29,6 +29,8 @@ public:
     void getdata(QString &getamp,QString &getfreq,QString &getphase,QString &getDCValue,QString &getVon,QString &getVinitial);
     void setdata(QString getamp,QString getfreq,QString getphase,QString getDCValue,QString getVon,QString getVinitial);
     std::complex<double> getACVoltage(){return std::complex<double>(amplitude*cos(phase/180*M_PI),amplitude*sin(phase/180*M_PI));}
+    friend QDataStream& operator<<( QDataStream&, const Source& );
+    friend QDataStream& operator>>( QDataStream&, Source& );
 };
 
 #endif // SOURCE_H

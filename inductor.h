@@ -18,6 +18,8 @@ public:
     std::complex <double> getimpedance(double frequency);
     ~Inductor();
     friend class  CircuitSimulation;
+    friend QDataStream& operator<<( QDataStream&, const Inductor& );
+    friend QDataStream& operator>>( QDataStream&, Inductor& );
 };
 
 #endif // INDUCTOR_H
