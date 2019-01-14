@@ -20,13 +20,28 @@ Source::~Source(){
 QDataStream &operator<<(QDataStream &qs, const Source &s)
 {
     qs << static_cast<const BasicComponent&>(s);
-    qs << s.amplitude << s.freq << s.phase << s.DCvalue<< s.Von << s.Vinitial << s.index_list;
+    int mode=s.currentMode;
+    qs << s.amplitude << s.freq << s.phase << s.DCvalue<< s.Von << s.Vinitial << s.index_list << mode;
+    return qs;
 }
 
 QDataStream &operator>>(QDataStream &qs, Source &s)
 {
     qs >> static_cast<BasicComponent&>(s);
-    qs >> s.amplitude >> s.freq >> s.phase >> s.DCvalue >> s.Von >> s.Vinitial >> s.index_list;
+    int mode;
+    qs >> s.amplitude >> s.freq >> s.phase >> s.DCvalue >> s.Von >> s.Vinitial >> s.index_list >> mode;
+    switch(mode){
+    case 0:
+        s.currentMode=DC;
+        break;
+    case 1:
+        s.currentMode=SIN;
+        break;
+    case 2:
+        s.currentMode=SQUARE;
+        break;
+    }
+    return qs;
 }
 
 QRectF Source::boundingRect() const{

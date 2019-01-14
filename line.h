@@ -15,8 +15,8 @@ public:
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     QPoint getPoint1(){return point1;}
     QPoint getPoint2(){return point2;}
-    QPoint setPoint1(QPoint point){point1=point;}
-    QPoint setPoint2(QPoint point){point2=point;}
+    QPoint setPoint1(QPoint point){point1=point;return point1;}
+    QPoint setPoint2(QPoint point){point2=point;return point2;}
     QPoint setPoint1(QPointF pointf);
     QPoint setPoint2(QPointF pointf);
     bool getPoint1Rect(){return point1Rect;}

@@ -23,12 +23,14 @@ QDataStream &operator<<(QDataStream &qs, const Resistor &r)
 {
     qs << static_cast<const LinearComponent&>(r);
     qs << r.resistance << r.index_list;
+    return qs;
 }
 
 QDataStream &operator>>(QDataStream &qs, Resistor &r)
 {
     qs >> static_cast<LinearComponent&>(r);
     qs >> r.resistance >> r.index_list;
+    return qs;
 }
 QRectF Resistor::boundingRect() const{
     return *bound;

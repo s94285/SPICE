@@ -453,15 +453,15 @@ void CircuitSimulation::run(){
                 sources[currentSourceIndex]->phase=oldPhase;
             }
         }
-    }catch(int x){
+    }catch(int){
         QMessageBox::critical(nullptr,"Error occurs","Please check your ground");
         return;
     }
-    catch(const char *s){
+    catch(const char){
         QMessageBox::critical(nullptr,"Error occurs","Please check your source connection");
         return;
     }
-    catch(double d)
+    catch(double)
     {
         QMessageBox::critical(nullptr,"Error occurs","Please check your components connection");
         return;
@@ -602,6 +602,18 @@ void CircuitSimulation::addSource()
     workspace->drawComponents();
 }
 
+struct ItemCount{
+    int resistors,capacitors,inductors,grounds,sources,nodes;
+};
+QDataStream &operator>>(QDataStream& qs,ItemCount& ic){     //input
+    qs >> ic.resistors >> ic.capacitors >> ic.inductors >> ic.grounds >> ic.sources >> ic.nodes;
+    return qs;
+}
+QDataStream &operator<<(QDataStream& qs,const ItemCount& ic){     //output
+    qs << ic.resistors << ic.capacitors << ic.inductors << ic.grounds << ic.sources << ic.nodes;
+    return qs;
+}
+
 void CircuitSimulation::openFile()
 {
     QString f_str = QFileDialog::getOpenFileName(nullptr, "Open","C:\\", "Schematics (*.qasc)");
@@ -613,12 +625,61 @@ void CircuitSimulation::openFile()
     }
     for(auto i:components)delete i;
     components.clear();
+    for(auto nodeOfLineToDelete:nodes){
+        for(QGraphicsItem *line:nodeOfLineToDelete->childItems()){
+            lines.removeOne(dynamic_cast<Line*>(line));
+            delete line;
+        }
+        delete nodeOfLineToDelete;
+    }
+    lines.clear();
+    nodes.clear();
     QDataStream openStream(&openFile);
-    while(!openStream.atEnd()){
+    ItemCount itemCount;
+    openStream >> itemCount;
+    for(int i=0;i<itemCount.resistors;i++){
         Resistor* resistor = new Resistor(0);
         openStream >> (*resistor);
         components.append(resistor);
+    }
+    for(int i=0;i<itemCount.capacitors;i++){
+        Capacitor* capacitor = new Capacitor(0);
+        openStream >> (*capacitor);
+        components.append(capacitor);
+    }
+    for(int i=0;i<itemCount.inductors;i++){
+        Inductor* inductor = new Inductor(0);
+        openStream >> (*inductor);
+        components.append(inductor);
+    }
+    for(int i=0;i<itemCount.grounds;i++){
+        ground* groundd = new ground(0);
+        openStream >> (*groundd);
+        components.append(groundd);
+    }
+    for(int i=0;i<itemCount.sources;i++){
+        Source* source = new Source(0);
+        openStream >> (*source);
+        components.append(source);
+    }
+    for(int i=0;i<itemCount.nodes;i++){
+        QVector<QPair<int,QPoint>> connectedPorts;
+        QVector<Line> linesOfNode;
+        int sizeOfLines;
+        openStream >> connectedPorts >> sizeOfLines;
 
+        Node* node = new Node();
+        for(int j=0;j<sizeOfLines;j++){
+            Line *newLine = new Line(QPoint(0,0),QPoint(0,0));
+            openStream >> (*newLine);
+            lines.append(newLine);
+            node->addToGroup(newLine);
+            newLine->setGroup(node);
+        }
+        for(auto k:connectedPorts){
+            node->connectedPorts.append(qMakePair(components[k.first],&(components[k.first]->ports[components[k.first]->ports.indexOf(k.second)])));
+        }
+        nodes.append(node);
     }
     workspace->drawComponents();
 }
@@ -634,19 +695,84 @@ void CircuitSimulation::saveFile()
         return;
     }
     QDataStream saveStream(&saveFile);
-
+    QVector<Resistor*> resistor_ptr;
+    QVector<Capacitor*> capacitor_ptr;
+    QVector<Inductor*> inductor_ptr;
+    QVector<ground*> ground_ptr;
+    QVector<Source*> source_ptr;
+    QVector<BasicComponent*> basicComponent_ptr;    //for finding index
     for(auto i:components){
         Resistor* resistor=dynamic_cast<Resistor*>(i);
-        if(resistor){
-            saveStream << (*resistor);
-        }
         Capacitor* capacitor=dynamic_cast<Capacitor*>(i);
-        if(capacitor){
-            saveStream << (*capacitor);
+        Inductor* inductor=dynamic_cast<Inductor*>(i);
+        ground* groundd=dynamic_cast<ground*>(i);
+        Source* source=dynamic_cast<Source*>(i);
+        if(resistor)
+            resistor_ptr.append(resistor);
+        if(capacitor)
+            capacitor_ptr.append(capacitor);
+        if(inductor)
+            inductor_ptr.append(inductor);
+        if(groundd)
+            ground_ptr.append(groundd);
+        if(source)
+            source_ptr.append(source);
+    }
+    std::copy(resistor_ptr.begin(),resistor_ptr.end(),std::back_inserter(basicComponent_ptr));
+    std::copy(capacitor_ptr.begin(),capacitor_ptr.end(),std::back_inserter(basicComponent_ptr));
+    std::copy(inductor_ptr.begin(),inductor_ptr.end(),std::back_inserter(basicComponent_ptr));
+    std::copy(ground_ptr.begin(),ground_ptr.end(),std::back_inserter(basicComponent_ptr));
+    std::copy(source_ptr.begin(),source_ptr.end(),std::back_inserter(basicComponent_ptr));
+    ItemCount itemCount;
+    itemCount.resistors=resistor_ptr.size();
+    itemCount.capacitors=capacitor_ptr.size();
+    itemCount.inductors=inductor_ptr.size();
+    itemCount.grounds=ground_ptr.size();
+    itemCount.sources=source_ptr.size();
+    itemCount.nodes=nodes.size();
+    saveStream << itemCount;
+    for(auto i:resistor_ptr)saveStream << (*i);
+    for(auto i:capacitor_ptr)saveStream << (*i);
+    for(auto i:inductor_ptr)saveStream << (*i);
+    for(auto i:ground_ptr)saveStream << (*i);
+    for(auto i:source_ptr)saveStream << (*i);
+
+    for(auto node:nodes){
+        QVector<QPair<int,QPoint>> connectedPorts;  //index of basiccomponent and connected port
+        QVector<Line*> linesOfNode;
+
+        for(auto line:lines){
+            if(dynamic_cast<Node*>(line->group())==node){
+                //l is in group node i
+                linesOfNode.append(line);
+            }
         }
 
+        for(auto port:node->connectedPorts){
+            connectedPorts.append(qMakePair(basicComponent_ptr.indexOf(port.first),*(port.second)));
+        }
+        int sizeOfLines = linesOfNode.size();
+        saveStream << connectedPorts << sizeOfLines;
+
+        for(auto i:linesOfNode){
+            saveStream << (*i);
+        }
     }
     saveFile.close();
 }
 
 QSet<unsigned> Source::index_list;
+
+/* QASC File Format
+ * struct itemCount
+ * resistors
+ * capacitors
+ * inductors
+ * grounds
+ * sources
+ * node{
+ *      QVector<QPair<int,QPoint>> connectedPorts
+ *      int sizeOfLines
+ *      linesOfNode
+ * }
+ */

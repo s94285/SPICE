@@ -23,12 +23,14 @@ QDataStream &operator<<(QDataStream &qs, const Capacitor &c)
 {
     qs << static_cast<const LinearComponent&>(c);
     qs << c.capacitance << c.index_list;
+    return qs;
 }
 
 QDataStream &operator>>(QDataStream &qs, Capacitor &c)
 {
     qs >> static_cast<LinearComponent&>(c);
     qs >> c.capacitance >> c.index_list;
+    return qs;
 }
 
 QRectF Capacitor::boundingRect() const{

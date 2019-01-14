@@ -13,7 +13,7 @@ class Node : public QGraphicsItemGroup
 protected:
     typedef QPair<BasicComponent*,QPoint*> PortOfComponent;
     QVector<PortOfComponent> connectedPorts;
-    typedef  QPair<std::complex<double>,double> VoltageofComponent ;//voltage,angular frequency
+    typedef  QPair<std::complex<double>,double> VoltageofComponent;//voltage,angular frequency
 
 public:
     Node(QGraphicsItem * parent = nullptr);

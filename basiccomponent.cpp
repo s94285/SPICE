@@ -83,6 +83,7 @@ QDataStream &operator<<(QDataStream &qs, const BasicComponent &b)
 {
     qs << b.pos() << b.rotation();
     qs << b.index << b.name << b.value << b.width << b.height << b.anker_x << b.anker_y << b.ports;
+    return qs;
 }
 
 QDataStream &operator>>(QDataStream &qs, BasicComponent &b)
@@ -93,6 +94,7 @@ QDataStream &operator>>(QDataStream &qs, BasicComponent &b)
     b.setPos(pos);
     b.setRotation(rotation);
     qs >> b.index >> b.name >> b.value >> b.width >> b.height >> b.anker_x >> b.anker_y >> b.ports;
+    return qs;
 }
 const int BasicComponent::pixPerAnker = 15;
 //QSet<unsigned> BasicComponent::index_list;

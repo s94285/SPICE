@@ -20,12 +20,14 @@ QDataStream &operator<<(QDataStream &qs, const ground &g)
 {
     qs << static_cast<const BasicComponent&>(g);
     qs << g.index_list;
+    return qs;
 }
 
 QDataStream &operator>>(QDataStream &qs, ground &g)
 {
     qs >> static_cast<BasicComponent&>(g);
     qs >> g.index_list;
+    return qs;
 }
 QRectF ground::boundingRect() const{
     return *bound;
