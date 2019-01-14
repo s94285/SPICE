@@ -35,6 +35,7 @@ void BasicComponent::set(QString cname,QString cvalue)
 
 QString BasicComponent::alphabet(QString s)
 {
+    if(s.size()==0)return QString("0");
     QString stemp;
     stemp=s;
     if(stemp[stemp.length()-1]=="k")

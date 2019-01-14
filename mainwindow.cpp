@@ -6,8 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     //make toolbar buttons
-    short int buttonIndex[8]={4,21,22,24,25,26,15,29};
-    for(int i=0;i<8;i++){
+    short int buttonIndex[11]={0,1,2,4,21,22,24,25,26,15,29};
+    for(int i=0;i<11;i++){
         QPushButton *qb=new QPushButton;
         toolBarButton[i]=qb;
         qb->setFixedSize(30,30);
@@ -19,27 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     {   //add source button
         QPushButton *qb=new QPushButton;
-        toolBarButton[8]=qb;
+        toolBarButton[11]=qb;
         qb->setFixedSize(30,30);
         qb->setIconSize(QSize(24,22));
         QPixmap qp(":/resources/source.png");
         qb->setIcon(qp);
-        ui->mainToolBar->addWidget(qb);
-    }
-    {   //add open file button
-        QPushButton *qb=new QPushButton;
-        toolBarButton[9]=qb;
-        qb->setFixedSize(30,30);
-        qb->setIconSize(QSize(24,22));
-        qb->setText("Openちゃん");
-        ui->mainToolBar->addWidget(qb);
-    }
-    {   //add open file button
-        QPushButton *qb=new QPushButton;
-        toolBarButton[10]=qb;
-        qb->setFixedSize(30,30);
-        qb->setIconSize(QSize(24,22));
-        qb->setText("Saveちゃん");
         ui->mainToolBar->addWidget(qb);
     }
 }

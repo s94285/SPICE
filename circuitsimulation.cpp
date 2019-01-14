@@ -18,17 +18,20 @@ CircuitSimulation::CircuitSimulation()
     scopeWindow =new Scope;
     scopeWindow->setStyleSheet("background-color: white;");
     //connecting buttons
-    connect((mainWindow->toolBarButton)[0],SIGNAL(clicked()),this,SLOT(run()));
-    connect((mainWindow->toolBarButton)[1],SIGNAL(clicked()),this,SLOT(drawLine()));
-    connect((mainWindow->toolBarButton)[2],SIGNAL(clicked()),this,SLOT(addGround()));
-    connect((mainWindow->toolBarButton)[3],SIGNAL(clicked()),this,SLOT(addResistor()));
-    connect((mainWindow->toolBarButton)[4],SIGNAL(clicked()),this,SLOT(addCapacitor()));
-    connect((mainWindow->toolBarButton)[5],SIGNAL(clicked()),this,SLOT(addInductor()));
-    connect((mainWindow->toolBarButton)[6],SIGNAL(clicked()),this,SLOT(cut()));
-    connect((mainWindow->toolBarButton)[7],SIGNAL(clicked()),this,SLOT(move()));
-    connect((mainWindow->toolBarButton)[8],SIGNAL(clicked()),this,SLOT(addSource()));
-    connect((mainWindow->toolBarButton)[9],SIGNAL(clicked()),this,SLOT(openFile()));
-    connect((mainWindow->toolBarButton)[10],SIGNAL(clicked()),this,SLOT(saveFile()));
+    connect((mainWindow->toolBarButton)[0],SIGNAL(clicked()),this,SLOT(newFile()));
+    connect((mainWindow->toolBarButton)[1],SIGNAL(clicked()),this,SLOT(openFile()));
+    connect((mainWindow->toolBarButton)[2],SIGNAL(clicked()),this,SLOT(saveFile()));
+    connect((mainWindow->toolBarButton)[3],SIGNAL(clicked()),this,SLOT(run()));
+    connect((mainWindow->toolBarButton)[4],SIGNAL(clicked()),this,SLOT(drawLine()));
+    connect((mainWindow->toolBarButton)[5],SIGNAL(clicked()),this,SLOT(addGround()));
+    connect((mainWindow->toolBarButton)[6],SIGNAL(clicked()),this,SLOT(addResistor()));
+    connect((mainWindow->toolBarButton)[7],SIGNAL(clicked()),this,SLOT(addCapacitor()));
+    connect((mainWindow->toolBarButton)[8],SIGNAL(clicked()),this,SLOT(addInductor()));
+    connect((mainWindow->toolBarButton)[9],SIGNAL(clicked()),this,SLOT(cut()));
+    connect((mainWindow->toolBarButton)[10],SIGNAL(clicked()),this,SLOT(move()));
+    connect((mainWindow->toolBarButton)[11],SIGNAL(clicked()),this,SLOT(addSource()));
+
+
     mainWindow->show();
     workspace = mainWindow->ui->workspace;
 }
@@ -623,6 +626,8 @@ void CircuitSimulation::openFile()
         qDebug() << "Cannot open file: " << f_str;
         return;
     }
+    initRun();
+    scopeWindow->close();
     for(auto i:components)delete i;
     components.clear();
     for(auto nodeOfLineToDelete:nodes){
@@ -759,6 +764,23 @@ void CircuitSimulation::saveFile()
         }
     }
     saveFile.close();
+}
+
+void CircuitSimulation::newFile()
+{
+    initRun();
+    scopeWindow->close();
+    for(auto i:components)delete i;
+    components.clear();
+    for(auto nodeOfLineToDelete:nodes){
+        for(QGraphicsItem *line:nodeOfLineToDelete->childItems()){
+            lines.removeOne(dynamic_cast<Line*>(line));
+            delete line;
+        }
+        delete nodeOfLineToDelete;
+    }
+    lines.clear();
+    nodes.clear();
 }
 
 QSet<unsigned> Source::index_list;

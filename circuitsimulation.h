@@ -36,6 +36,7 @@ private slots:
     void addSource();
     void openFile();
     void saveFile();
+    void newFile();
 public:
     CircuitSimulation();
     ~CircuitSimulation();
