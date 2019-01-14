@@ -24,6 +24,8 @@ public:
     bool setPoint1Rect(bool boolean){point1Rect=boolean;return point1Rect;}
     bool setPoint2Rect(bool boolean){point2Rect=boolean;return point2Rect;}
     friend class CircuitSimulation;
+    friend QDataStream &operator<<(QDataStream&,const Line&);
+    friend QDataStream &operator>>(QDataStream&,Line&);
 };
 
 #endif // LINE_H

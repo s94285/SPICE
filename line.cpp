@@ -58,3 +58,16 @@ QPoint Line::setPoint2(QPointF pointf)
     point2.setX(round(pointf.x()/pixPerAnker));
     point2.setY(round(pointf.y()/pixPerAnker));
 }
+
+QDataStream &operator<<(QDataStream& qs,const Line& l){
+    qs << l.pos() << l.rotation();
+    qs << l.point1 << l.point2 << l.pixPerAnker << l.point1Rect << l.point2Rect;
+}
+QDataStream &operator>>(QDataStream& qs,Line& l){
+    QPointF pos;
+    qreal rotation;
+    qs >> pos >> rotation;
+    l.setPos(pos);
+    l.setRotation(rotation);
+    qs >> l.point1 >> l.point2 >> l.pixPerAnker >> l.point1Rect >> l.point2Rect;
+}

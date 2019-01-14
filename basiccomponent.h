@@ -18,8 +18,6 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    bool _pan;
-    int _panStartX, _panStartY;
     QVector<QPoint> ports;
 public:
     BasicComponent();
