@@ -25,7 +25,23 @@ MainWindow::MainWindow(QWidget *parent) :
         QPixmap qp(":/resources/source.png");
         qb->setIcon(qp);
         ui->mainToolBar->addWidget(qb);
-    }    
+    }
+    {   //add open file button
+        QPushButton *qb=new QPushButton;
+        toolBarButton[9]=qb;
+        qb->setFixedSize(30,30);
+        qb->setIconSize(QSize(24,22));
+        qb->setText("Openちゃん");
+        ui->mainToolBar->addWidget(qb);
+    }
+    {   //add open file button
+        QPushButton *qb=new QPushButton;
+        toolBarButton[10]=qb;
+        qb->setFixedSize(30,30);
+        qb->setIconSize(QSize(24,22));
+        qb->setText("Saveちゃん");
+        ui->mainToolBar->addWidget(qb);
+    }
 }
 
 MainWindow::~MainWindow()

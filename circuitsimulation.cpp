@@ -11,6 +11,7 @@
 #include "scope.h"
 #include "ui_scope.h"
 #include <QMessageBox>
+#include <QFileDialog>
 CircuitSimulation::CircuitSimulation()
 {
     mainWindow=new MainWindow;
@@ -26,6 +27,8 @@ CircuitSimulation::CircuitSimulation()
     connect((mainWindow->toolBarButton)[6],SIGNAL(clicked()),this,SLOT(cut()));
     connect((mainWindow->toolBarButton)[7],SIGNAL(clicked()),this,SLOT(move()));
     connect((mainWindow->toolBarButton)[8],SIGNAL(clicked()),this,SLOT(addSource()));
+    connect((mainWindow->toolBarButton)[9],SIGNAL(clicked()),this,SLOT(openFile()));
+    connect((mainWindow->toolBarButton)[10],SIGNAL(clicked()),this,SLOT(saveFile()));
     mainWindow->show();
     workspace = mainWindow->ui->workspace;
 }
@@ -597,6 +600,47 @@ void CircuitSimulation::addSource()
     components.append(s1);
     workspace->itemSelected=s1;
     workspace->drawComponents();
+}
+
+void CircuitSimulation::openFile()
+{
+    QString f_str = QFileDialog::getOpenFileName(nullptr, "Open","C:\\", "Schematics (*.qasc)");
+    qDebug() << f_str;
+    QFile openFile(f_str);
+    if(!openFile.open(QIODevice::ReadOnly)){
+        qDebug() << "Cannot open file: " << f_str;
+        return;
+    }
+    for(auto i:components)delete i;
+    components.clear();
+    QDataStream openStream(&openFile);
+    while(!openStream.atEnd()){
+        Resistor* resistor = new Resistor(0);
+        openStream >> (*resistor);
+        components.append(resistor);
+    }
+    workspace->drawComponents();
+}
+
+void CircuitSimulation::saveFile()
+{
+    QString f_str = QFileDialog::getSaveFileName(nullptr, "Save","C:\\", "Schematics (*.qasc)");
+    qDebug() << f_str;
+    QFile saveFile(f_str);
+
+    if(!saveFile.open(QIODevice::WriteOnly)){
+        qDebug() << "Cannot save file: " << f_str;
+        return;
+    }
+    QDataStream saveStream(&saveFile);
+
+    for(auto i:components){
+        Resistor* resistor=dynamic_cast<Resistor*>(i);
+        if(resistor){
+            saveStream << (*resistor);
+        }
+    }
+    saveFile.close();
 }
 
 QSet<unsigned> Source::index_list;

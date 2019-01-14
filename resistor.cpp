@@ -18,6 +18,18 @@ Resistor::~Resistor(){
     delete pixmap;
     delete bound;
 }
+
+QDataStream &operator<<(QDataStream &qs, const Resistor &r)
+{
+    qs << static_cast<const LinearComponent&>(r);
+    qs << r.resistance << r.index_list;
+}
+
+QDataStream &operator>>(QDataStream &qs, Resistor &r)
+{
+    qs >> static_cast<LinearComponent&>(r);
+    qs >> r.resistance >> r.index_list;
+}
 QRectF Resistor::boundingRect() const{
     return *bound;
 }

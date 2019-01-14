@@ -17,6 +17,8 @@ public:
     std::complex<double> getimpedance(double frequency);
     ~Resistor();
     friend class CircuitSimulation;
+    friend QDataStream& operator<<( QDataStream&, const Resistor& );
+    friend QDataStream& operator>>( QDataStream&, Resistor& );
 };
 
 #endif // RESISITOR_H

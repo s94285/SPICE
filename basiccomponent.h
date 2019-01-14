@@ -37,6 +37,8 @@ public:
     const static int pixPerAnker;
     const QPoint getAnkerPoint()const{return QPoint(anker_x,anker_y);}
     QPoint *getPortByScenePoint(const QPointF &itemPoint);
+    friend QDataStream &operator<<(QDataStream&,const BasicComponent&);
+    friend QDataStream &operator>>(QDataStream&,BasicComponent&);
 };
 
 #endif // BASICCOMPONENT_H

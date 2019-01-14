@@ -78,5 +78,21 @@ QPoint *BasicComponent::getPortByScenePoint(const QPointF &itemPoint)
     }
     return nullptr;
 }
+
+QDataStream &operator<<(QDataStream &qs, const BasicComponent &b)
+{
+    qs << b.pos() << b.rotation();
+    qs << b.index << b.name << b.value << b.width << b.height << b.anker_x << b.anker_y << b._pan << b._panStartX << b._panStartY << b.ports;
+}
+
+QDataStream &operator>>(QDataStream &qs, BasicComponent &b)
+{
+    QPointF pos;
+    qreal rotation;
+    qs >> pos >> rotation;
+    b.setPos(pos);
+    b.setRotation(rotation);
+    qs >> b.index >> b.name >> b.value >> b.width >> b.height >> b.anker_x >> b.anker_y >> b._pan >> b._panStartX >> b._panStartY >> b.ports;
+}
 const int BasicComponent::pixPerAnker = 15;
 //QSet<unsigned> BasicComponent::index_list;

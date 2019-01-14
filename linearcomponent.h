@@ -18,6 +18,8 @@ public:
     virtual std::complex<double> getimpedance(double frequency)=0;
     friend class CircuitSimulation;
     friend class ScopeView;
+    friend QDataStream &operator<<(QDataStream&,const LinearComponent&);
+    friend QDataStream &operator>>(QDataStream&,LinearComponent&);
 };
 
 #endif // LINEARCOMPONENT_H
