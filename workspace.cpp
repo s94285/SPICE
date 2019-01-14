@@ -276,6 +276,7 @@ void Workspace::mousePressEvent(QMouseEvent *event){
     }
         break;
     }
+    scene->update();
     QGraphicsView::mousePressEvent(event);
     //    viewport()->setCursor(Qt::CrossCursor);   //override default pan cursor
 }

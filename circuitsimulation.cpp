@@ -783,6 +783,8 @@ void CircuitSimulation::newFile()
     }
     lines.clear();
     nodes.clear();
+    workspace->drawComponents();
+    workspace->scene->update();
 }
 
 QSet<unsigned> Source::index_list;
